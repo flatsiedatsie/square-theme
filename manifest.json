@@ -10,7 +10,7 @@
       ]
     }
   ],
-  "description": "An experimental theme",
+  "description": "A theme that removes the octopus view, and adds setpoint buttons",
   "gateway_specific_settings": {
     "webthings": {
       "exec": "python3 {path}/main.py",
@@ -24,12 +24,10 @@
   "license": "MPL-2.0",
   "manifest_version": 1,
   "name": "Square theme",
-  "short_name": "squaretm",
+  "short_name": "Square",
   "version": "0.0.1",
   "web_accessible_resources": [
     "css/*.css",
-    "images/*.svg",
-    "js/*.js",
-    "views/*.html"
+    "js/*.js"
   ]
 }
