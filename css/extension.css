@@ -194,6 +194,10 @@ h1,h2,h3,h4,h5,h6{
 	background-color:transparent;
 }
 
+.component::part(label){
+	color:white;
+	font-size:2.4rem;
+}
 
 #things.single-thing .component::part(value){
 	font-size:2.4rem;
@@ -218,25 +222,40 @@ h1,h2,h3,h4,h5,h6{
 webthing-target-temperature-property::part(contents){
 		left: 50%;
 }
-.component::part(up),
+
+.conponent::part(extra-thermostat-buttons){
+	width:100%;
+}
+
+
+
 .component::part(down){
-		width: 5rem;
+	left:0;
+	right:auto;
+    width: 5rem;
     height: 5rem;
     padding: 1rem;
     box-sizing: border-box;
     font-size: 2rem;
     background-color: rgba(0,0,0,.05);
     margin-bottom: .2rem;	
-		cursor: pointer;
+    cursor: pointer;
+    position:absolute;
 }
+
 .component::part(up){
-	float:right;
+	right:0;
+	left:auto;
+    width: 5rem;
+    height: 5rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-size: 2rem;
+    background-color: rgba(0,0,0,.05);
+    margin-bottom: .2rem;	
+    cursor: pointer;
+    position:absolute;
 }
-.component::part(down){
-	float:left;
-}
-
-
 
 
 

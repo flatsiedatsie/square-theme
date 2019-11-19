@@ -55,10 +55,19 @@
 					const shadow = thermostats[i].shadowRoot;
 					const childNodes = Array.from(shadow.childNodes);
 					
-					var htmldata = '<div part="extra-thermostat-buttons"><div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div><div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div><div>';
+					//var htmldata = '<div part="extra-thermostat-buttons"><div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div><div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div><div>';
+					var htmldata = '<div id="test" part="extra-thermostat-buttons"><div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div>';
+					htmldata += '<div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div></div>';
 					var e = document.createElement('div');
+					e.part = 'extra-thermostat-buttons';
+					//console.log(e);
+					//e.appendChild(htmldata);
+					//console.log(e);
 					e.innerHTML = htmldata;
-					shadow.querySelector(".webthing-number-property-container").appendChild(e.firstChild);
+					//console.log(e.innerHTML);
+					//shadow.querySelector(".webthing-number-property-container").appendChild(e.firstChild);
+					var referenceNode = shadow.querySelector(".webthing-number-property-contents");
+					referenceNode.parentNode.insertBefore(e, referenceNode.nextSibling);
 				}
 			}
 	}
