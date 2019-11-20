@@ -85,6 +85,7 @@ h1,h2,h3,h4,h5,h6{
 	display: flex;
 	flex-flow: wrap;
 	width:100%;
+    align-content:center;
 }
 
 /*#things > .thing > *:not(a):not(span), */
@@ -172,13 +173,7 @@ h1,h2,h3,h4,h5,h6{
 	width:100%;
 	border:none;
 	border-radius:0;
-	margin-right: 1rem;
 	background-color: transparent;
-}
-
-.component::part(icon){
-	/*background-color:transparent;
-	background-image: none;*/
 }
 
 .component::part(name){
