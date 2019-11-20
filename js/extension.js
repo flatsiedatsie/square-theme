@@ -73,20 +73,22 @@
 
           const down = document.createElement('div');
           down.id = 'down';
-          down.part = 'down';
+					down.setAttribute("part", "down"); 
+					down.innerHTML = '-';
           down.addEventListener('click', () => {
             this.updateInputValue(thermostat.id, -1);
           });
 
           const up = document.createElement('div');
           up.id = 'up';
-          up.part = 'up';
+					up.setAttribute("part", "up"); 
+					up.innerHTML = '+';
           up.addEventListener('click', () => {
             this.updateInputValue(thermostat.id, 1);
           });
 
           const el = document.createElement('div');
-          el.part = 'extra-thermostat-buttons';
+					el.setAttribute("part", "extra-thermostat-buttons"); 
           el.id = 'extra-thermostat-buttons';
           el.appendChild(down);
           el.appendChild(up);
