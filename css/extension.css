@@ -176,8 +176,8 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .component::part(icon){
-	background-color:transparent;
-	background-image: none;
+	/*background-color:transparent;
+	background-image: none;*/
 }
 
 .component::part(name){
