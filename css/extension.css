@@ -13,21 +13,6 @@ h1,h2,h3,h4,h5,h6{
 	border-radius: 0.5rem;
 }
 
-#things-view  #thing-title.hidden{display:flex!important;}
-
-#things-view  #thing-title.hidden #thing-title-title{display:none;}
-
-#things-view .hidden #thing-title-icon:not(.custom-thing)::after{
-	content:'Things';
-  font-size: 3rem;
-}
-
-#things-view .hidden #thing-title-icon:not(.custom-thing){
-	height:0;
-	border:none;
-	width:auto;
-	top: 0;
-}
 
 #things{
 	text-align:left;
