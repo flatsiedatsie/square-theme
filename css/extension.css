@@ -220,18 +220,16 @@ h1,h2,h3,h4,h5,h6{
 
 /*  For some reason this one needs some correction.*/
 webthing-target-temperature-property::part(contents){
-		left: 50%;
+    left: 50%;
 }
 
-.conponent::part(extra-thermostat-buttons){
-	width:100%;
+.component::part(extra-thermostat-buttons){
+		width:100%;
+		display:flex;
+		justify-content:space-between;
 }
-
-
 
 .component::part(down){
-	left:0;
-	right:auto;
     width: 5rem;
     height: 5rem;
     padding: 1rem;
@@ -240,12 +238,9 @@ webthing-target-temperature-property::part(contents){
     background-color: rgba(0,0,0,.05);
     margin-bottom: .2rem;	
     cursor: pointer;
-    position:absolute;
 }
 
 .component::part(up){
-	right:0;
-	left:auto;
     width: 5rem;
     height: 5rem;
     padding: 1rem;
@@ -254,7 +249,6 @@ webthing-target-temperature-property::part(contents){
     background-color: rgba(0,0,0,.05);
     margin-bottom: .2rem;	
     cursor: pointer;
-    position:absolute;
 }
 
 
