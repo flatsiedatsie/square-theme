@@ -56,8 +56,10 @@
 					const childNodes = Array.from(shadow.childNodes);
 					
 					//var htmldata = '<div part="extra-thermostat-buttons"><div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div><div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div><div>';
-					var htmldata = '<div id="test" part="extra-thermostat-buttons"><div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div>';
-					htmldata += '<div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div></div>';
+					var htmldata = '<div id="extra-thermostat-buttons" part="extra-thermostat-buttons">';
+					htmldata += '<div id="down" part="down" onclick="updateInputValue(\'' + component_id + '\',-1)">-</div>';
+					htmldata += '<div id="up" part="up" onclick="updateInputValue(\'' + component_id + '\',1)">+</div>';
+					htmldata += '</div>';
 					var e = document.createElement('div');
 					e.part = 'extra-thermostat-buttons';
 					//console.log(e);
