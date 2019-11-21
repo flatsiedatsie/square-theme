@@ -58,6 +58,7 @@ h1,h2,h3,h4,h5,h6{
 	/*width: 100vw;
 	display:flex;*/
 	width:200px;
+	height:200px;
 	min-width: 200px;
 	background-color: #89b6d6;
 	text-align: left;
