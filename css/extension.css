@@ -21,6 +21,7 @@ h1,h2,h3,h4,h5,h6{
 	width:90%;
 	margin-left:5%;
 	height: calc(100vh - 7.6rem);
+	align-content: center;
 }
 
 .thing-detail-layout-links{
