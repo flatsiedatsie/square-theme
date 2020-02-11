@@ -16,12 +16,20 @@ h1,h2,h3,h4,h5,h6{
 
 #things{
 	text-align:left;
-	display: flex;
-	flex-flow: wrap;
-	width:90%;
-	margin-left:5%;
-	height: calc(100vh - 7.6rem);
-	align-content: center;
+	display: block;
+	/*flex-flow: wrap;*/
+  width: calc(100% - 19.2rem);
+  margin-left: 8.6rem;
+	/*height: calc(100vh - 7.6rem);*/
+	transform:none;
+	top:0;
+	height:auto;
+	max-height: none;
+	/*align-content: center; causes issues */
+}
+
+#things:not(.single-thing){
+	/*align-content: center;*/
 }
 
 .thing-detail-layout-links{
@@ -122,6 +130,10 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
+#things.single-thing > .thing div::part(icon){
+	background-position: center center;
+}
+
 
 @media only screen and (max-width: 640px) {
 	/*
@@ -161,6 +173,8 @@ h1,h2,h3,h4,h5,h6{
 	border:none;
 	border-radius:0;
 	background-color: transparent;
+	background-position: center center;
+	margin-top:1rem;
 }
 
 .component::part(name){
@@ -189,11 +203,11 @@ h1,h2,h3,h4,h5,h6{
 #things.single-thing > .thing > .component:not(div)::part(value){
 	font-size: 4rem;
 }
-/*
+
 .component::part(input){
 	width:auto;
 }
-*/
+
 
 
 
@@ -284,6 +298,16 @@ webthing-target-temperature-property::part(contents){
 	max-height: 100%;
 }
 
+
+
+
+/*  CHANGING HOW SCROLLING WORKS, FIXES LAGGING ISSUE IN CHROMIUM ON SOME SETTINGS PAGES  */
+
+#adapter-settings ul, #addon-settings ul, #domain-settings ul, #experiment-settings ul, #localization-settings ul, #update-settings ul, #authorization-settings ul, #developer-settings ul{
+	position: initial;
+	margin: 0 auto;
+	transform: none;
+}
 
 
 
