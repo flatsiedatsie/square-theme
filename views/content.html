@@ -1,0 +1,45 @@
+<div id="extension-square-theme-content">
+  
+    <div id="extension-square-theme-content-container">
+          <div>
+                <h2>Shutdown or reboot the system</h2>
+                <button type="button" id="extension-square-theme-shutdown">Shut down</button>
+                <button type="button" id="extension-square-theme-reboot">Reboot</button>
+          </div>
+
+          <div>
+                <h2>Fullscreen</h2>
+                <button type="button" id="extension-square-theme-fullscreen-button">Toggle fullscreen</button>
+          </div>
+
+          <h2>Manually set the time</h2>
+          <div id="extension-square-theme-request">
+                <div id="extension-square-theme-form-content">
+                      <label for="hours">Hours: </label><input type="number" name="hours" onfocus="this.placeholder=''" id="extension-square-theme-form-hours" required>
+                      <br/>
+                      <label for="minutes">Minutes: </label><input type="number" name="minutes" onfocus="this.placeholder=''" id="extension-square-theme-form-minutes" required>
+                      <br/>
+                      <button type="button" id="extension-square-theme-form-browser-time-button">Get time from browser</button>
+                      <br/>
+                      <!--<h3>Internet time</h3>-->
+                      <div class="extension-square-theme-checkbox-container"><input type="checkbox" name="ntp" id="extension-square-theme-form-ntp" checked></div><label for="ntp">Try to get time from the internet?</label>
+                      <p class="field-description">If enabled, as soon as there is an internet connection, the manually entered time will be overridden by the time provided by an internet time server.</p>
+                      <br/>
+                      <button type="button" id="extension-square-theme-form-submit">Set time</button>
+                </div>
+          </div>
+
+          <br>
+          <br>
+
+          <div id="extension-square-theme-response">
+                <pre id="extension-square-theme-response-data"></pre>
+          </div>
+
+    </div>
+</div>
+
+
+
+
+
