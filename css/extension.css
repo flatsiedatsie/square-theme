@@ -365,7 +365,7 @@ webthing-target-temperature-property::part(contents){
 	justify-content:space-between;
 }
 
-#addon-config-settings .json-schema-form .control-label
+#addon-config-settings .json-schema-form .control-label,
 #addon-config-settings .form-group.field.field-boolean > .field-description{
 	flex-basis:calc(100% - 5rem);
 }
