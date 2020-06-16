@@ -331,3 +331,27 @@ webthing-target-temperature-property::part(contents){
   height: 20rem;
   border-right: 0.2rem dashed white;
 }
+
+
+
+
+#addon-config-settings .json-schema-form .form-group{
+	margin: 4rem 0;
+}
+
+/*  Add-ons page improvement  */
+
+#addon-config-settings .form-group.field.field-boolean{
+    display: flex;
+    flex-wrap: wrap;
+	justify-content:space-between;
+}
+
+#addon-config-settings .json-schema-form .control-label
+#addon-config-settings .form-group.field.field-boolean > .field-description{
+	flex-basis:calc(100% - 5rem);
+}
+
+#addon-config-settings .form-group.field.field-boolean > .checkbox{
+	flex-basis:4rem;
+}
