@@ -3,6 +3,7 @@
 version=$(grep '"version":' manifest.json | cut -d: -f2 | cut -d\" -f2)
 
 rm -rf SHA256SUMS package
+rm -rf *.tgz
 mkdir package
 cp manifest.json LICENSE README.md package/
 cp -r css js package/
