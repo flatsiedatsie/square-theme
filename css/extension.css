@@ -373,3 +373,67 @@ webthing-target-temperature-property::part(contents){
 #addon-config-settings .form-group.field.field-boolean > .checkbox{
 	flex-basis:4rem;
 }
+
+
+
+
+/*  FLOORPLAN  */
+
+#floorplan.editing{
+	background-color: rgba(255,255,255,.1);
+}
+
+#floorplan.editing .floorplan-thing:not(:hover){
+	animation: wiggle .6s infinite;
+}
+
+#floorplan.editing .floorplan-thing:nth-child(2n):not(:hover){
+	animation: wiggler .5s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(3n):not(:hover){
+	animation: wiggle .7s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(5n):not(:hover){
+	animation: wiggle .55s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(7n):not(:hover){
+	animation: wiggler .35s infinite;
+}
+
+#floorplan.editing .floorplan-thing:nth-child(2n+1):not(:hover){
+	animation: wiggler .4s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(3n+1):not(:hover){
+	animation: wiggle .8s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(5n+1):not(:hover){
+	animation: wiggler .45s infinite;
+}
+#floorplan.editing .floorplan-thing:nth-child(7n+1):not(:hover){
+	animation: wiggle .3s infinite;
+}
+
+
+@keyframes wiggle {
+  0%   {top: 0px; left:0;}
+  25%  {top: 1px; left:-1px;}
+  50%  {top: 0px; left:0;}
+  75%  {top: -1px; left:1px;}
+  100% {top: 0px;left:0;}
+}
+
+@keyframes wiggler {
+  0%   {top: 0px; left:1;}
+  25%  {top: -1px; left:0px;}
+  50%  {top: 0px; left:1;}
+  75%  {top: 1px; left:0px;}
+  100% {top: 0px;left:1;}
+}
+
+@keyframes wiggle-old {
+    0% { border: 0 0 0 5px solid black; }
+   25% { border: 0 0 5px 0 solid black; }
+   50% { border: 0 5px 0 0 solid black; }
+   75% { border: 5px 0 0 0 solid black; }
+  100% { border: 0 0 0 5px solid black; }
+}
