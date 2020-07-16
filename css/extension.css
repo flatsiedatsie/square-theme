@@ -53,10 +53,10 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .thing-detail-container{
-  -webkit-transition: none !important;
-  -moz-transition: none !important;
-  -o-transition: none !important;
-  transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
 	transform: none !important;
 	position: inherit;
 	margin:0;
@@ -133,8 +133,6 @@ h1,h2,h3,h4,h5,h6{
 	/*max-width:410px;*/
 }
 
-
-
 #things.single-thing > .thing > *:not(div)::part(container){
 	height:100%;
 }
@@ -183,7 +181,6 @@ h1,h2,h3,h4,h5,h6{
 	}
 }
 
-
 .component::part(icon),
 .component::part(container){
 	width:100%;
@@ -195,14 +192,14 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .component::part(name){
-  max-width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  opacity: .7;
-  width: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
+    max-width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: .7;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 	text-align:left;
 	font-size: 1.3rem;
 	background-color:transparent;
@@ -222,8 +219,44 @@ h1,h2,h3,h4,h5,h6{
 	font-size: 4rem;
 }
 
+.component::part(container).webthing-switch-property-container{
+	border:5px solid red;
+}
+
+.component::part(contents){
+	/*position:relative;*/
+}
+/*
+.component::part(contents) > form{
+	display:inline-block;
+}
+*/
+
+.component::part(select),
 .component::part(input){
-	width:auto;
+	/*width:94%;
+	margin:3%;*/
+	min-width: 130px;
+}
+
+
+webthing-level-property.component::part(slider){
+	width:12rem;
+	margin-left:-2rem;
+	
+}
+
+
+webthing-level-property.component::part(slider)::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
 }
 
 
@@ -239,9 +272,9 @@ webthing-target-temperature-property::part(contents){
 }
 
 .component::part(extra-thermostat-buttons){
-		width:100%;
-		display:flex;
-		justify-content:space-between;
+	width:100%;
+	display:flex;
+	justify-content:space-between;
 }
 
 .component::part(down){
@@ -267,8 +300,6 @@ webthing-target-temperature-property::part(contents){
 }
 
 
-
-
 .thing-title{
 	padding-left:1rem;
 }
@@ -286,28 +317,28 @@ webthing-target-temperature-property::part(contents){
 
 
 #extension-square-theme-view {
-  height: 100%; /*calc(100% - 7.6rem);*/
-  box-sizing: border-box;
-  /*overflow: auto;*/
-  position: relative;
-  top: 7.6rem;
-  /*left:0;*/
+    height: 100%; /*calc(100% - 7.6rem);*/
+    box-sizing: border-box;
+    /*overflow: auto;*/
+    position: relative;
+    top: 7.6rem;
+    /*left:0;*/
 }
 
 
 #extension-square-theme-content {
 	display:flex;
 	flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 	flex-direction: column;
 	overflow: scroll;
-  position: relative;
-  text-align: left;
-  font-size: 1.6rem;
-  color: #fff;
-  max-width: 60rem;
-  margin: 0 auto;
+    position: relative;
+    text-align: left;
+    font-size: 1.6rem;
+    color: #fff;
+    max-width: 60rem;
+    margin: 0 auto;
 	height:100vh; 
 }
 
@@ -436,4 +467,44 @@ webthing-target-temperature-property::part(contents){
    50% { border: 0 5px 0 0 solid black; }
    75% { border: 5px 0 0 0 solid black; }
   100% { border: 0 0 0 5px solid black; }
+}
+
+
+
+
+/*  LOGS OVERVIEW  */
+
+#logs-view.long-list > .logs > .logs-log-container{
+    transform: scale(0.8);
+    margin-left:10%;
+}
+
+#log-list-container{
+    position:absolute;
+    top:9.6rem;
+    left:1rem;
+	background-color:rgba(0,0,0,.1);
+	max-width: 18%;
+	max-height:calc(100vh - 9.6rem);
+	overflow:auto;
+}
+
+#log-list-container li{
+	border-bottom:1px solid rgba(0,0,0,.1);
+	cursor:pointer;
+	
+}
+
+#log-list-container li:hover{
+	background-color:rgba(0,0,0,.1);
+}
+
+#log-list-container li label{
+	display:flex;
+	padding:.5rem;
+}
+
+#log-list-ul{
+	margin-top:5px;
+	margin-bottom:0;
 }
