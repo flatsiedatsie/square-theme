@@ -474,37 +474,90 @@ webthing-target-temperature-property::part(contents){
 
 /*  LOGS OVERVIEW  */
 
-#logs-view.long-list > .logs > .logs-log-container{
-    transform: scale(0.8);
-    margin-left:10%;
+
+#logs-view:not(.solo-view) #square-theme-log-filter-container{
+	display:block;
+	position: fixed;
+    top: 2rem;
+    right: 0;
+	width:auto;
+	min-width:200px;
 }
 
-#log-list-container{
-    position:absolute;
-    top:9.6rem;
-    left:1rem;
-	background-color:rgba(0,0,0,.1);
-	max-width: 18%;
-	max-height:calc(100vh - 9.6rem);
+#logs-view.solo-view #square-theme-log-filter-container{
+	display:none;
+}
+
+
+#square-theme-log-list-container{
+	background-color:#5288af;
+	max-width: 100%;
+	max-height:calc(100vh - 20rem);
 	overflow:auto;
+	transition: transform 0.25s ease;
 }
 
-#log-list-container li{
+#square-theme-log-filter-container .icon-button{
+	position:relative;
+}
+
+
+#square-theme-log-list-container li{
 	border-bottom:1px solid rgba(0,0,0,.1);
 	cursor:pointer;
-	
 }
 
-#log-list-container li:hover{
+#square-theme-log-list-container li:hover{
 	background-color:rgba(0,0,0,.1);
 }
 
-#log-list-container li label{
+#square-theme-log-list-container li label{
 	display:flex;
 	padding:.5rem;
 }
 
-#log-list-ul{
-	margin-top:5px;
-	margin-bottom:0;
+#square-theme-log-list-ul{
+	margin:0;
+	list-style: none;
+	list-style-type: none;
+	padding-left: 0;
+}
+
+#square-theme-log-list-toggle{
+	text-align:right;
+	height: 8rem;
+	padding-right: 2rem;
+}
+
+#square-theme-log-filter-button{
+	background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='white' d='M16 0c-8.837 0-16 2.239-16 5v3l12 12v10c0 1.105 1.791 2 4 2s4-0.895 4-2v-10l12-12v-3c0-2.761-7.163-5-16-5zM2.95 4.338c0.748-0.427 1.799-0.832 3.040-1.171 2.748-0.752 6.303-1.167 10.011-1.167s7.262 0.414 10.011 1.167c1.241 0.34 2.292 0.745 3.040 1.171 0.494 0.281 0.76 0.519 0.884 0.662-0.124 0.142-0.391 0.38-0.884 0.662-0.748 0.427-1.8 0.832-3.040 1.171-2.748 0.752-6.303 1.167-10.011 1.167s-7.262-0.414-10.011-1.167c-1.24-0.34-2.292-0.745-3.040-1.171-0.494-0.282-0.76-0.519-0.884-0.662 0.124-0.142 0.391-0.38 0.884-0.662z'%3E%3C/path%3E%3C/svg%3E");    
+	/*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center;
+	background-size:50%;
+	background-color:#79add1;
+}
+
+
+#square-theme-log-filter-container span{
+	font-size:1.3rem;
+}
+
+
+
+
+/*  RULES  */
+
+
+.rule{
+	height:30rem;
+}
+
+.rule-preview,
+.rule-edit-overlay{
+	height:50%;
+}
+
+.rule-info{
+	height:40%;
 }
