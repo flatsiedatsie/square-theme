@@ -84,6 +84,19 @@ h1,h2,h3,h4,h5,h6{
     align-content:center;
 }
 
+#things:not(.single-thing) .thing span.thing-title{
+	width:calc(100% - 2rem);
+}
+
+#things:not(.single-thing) .thing .component::part(contents){
+	width:auto;
+}
+#things:not(.single-thing) .thing .component::part(unit){
+	opacity:.6;
+	font-size:1.2rem;
+	padding-left:.25rem;
+}
+
 /*#things > .thing > *:not(a):not(span), */
 /*
 #things:not(.single-thing) > .thing > *:not(a):not(span){
@@ -544,6 +557,81 @@ webthing-target-temperature-property::part(contents){
 }
 
 
+/*  logs overlaying on top of each other  */
+.square-theme-logs-overlay .logs-log-container{
+	position:absolute;
+	pointer-events: none;
+	
+}
+
+.square-theme-logs-overlay .logs-log-info{
+	display:none;
+}
+.square-theme-logs-overlay .logs-log-container:hover .logs-log-info{
+	display:inline-block;
+	position:absolute;
+}
+
+.square-theme-logs-overlay .logs-graph-label,
+.square-theme-logs-overlay .logs-graph-tick{
+	display:none;
+}
+
+
+
+.square-theme-logs-overlay .logs-graph{
+	margin-top: 5rem;
+}
+
+
+.square-theme-logs-overlay .logs-graph-line{
+	pointer-events: auto;
+}
+
+.square-theme-logs-overlay .logs-graph-fill{
+	opacity:.2;
+}
+
+.square-theme-logs-overlay .logs-log-container:hover .logs-graph-line{
+	stroke:#305067;
+}
+
+.square-theme-logs-overlay .logs-log-container:hover .logs-graph-label,
+.square-theme-logs-overlay .logs-log-container:hover .logs-graph-tick{
+	display:initial;
+}
+
+#square-theme-logs-overlay-button{
+	height: 2.6rem;
+    color: white;
+    margin: .5rem;
+    font-size: 1.3rem;
+	background-color: #79add1;
+	opacity:.8;
+	border:none;
+	border-radius:.5rem;
+}
+#square-theme-logs-overlay-button:hover{
+	opacity:1;
+}
+
+
+
+.logs-graph-progress{
+    animation: pulsate 2s ease-out infinite;
+}
+
+@keyframes pulsate {
+    0% { 
+        opacity: 0.8;
+    }
+    50% { 
+        opacity: 1.0;
+    }
+    100% { 
+        opacity: 0.8;
+    }
+}
 
 
 /*  RULES  */
