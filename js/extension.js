@@ -12,20 +12,11 @@
       this.addParts();
       this.addThermostatButtons();
 	  
-	  
-	  	// Check if logs button is clicked
-	  	/*
-		const logs_menu_item = document.getElementById('logs-menu-item');
-		logs_menu_item.addEventListener('click', () => {
-      		console.log(this);
-      	});
-	  	*/
-	
 
 		// Create log filter container
 		var log_filter_container = document.getElementById("square-theme-log-filter-container");
 		if(!log_filter_container){
-			console.log("creating logs filter container");
+			//console.log("creating logs filter container");
 			
 			var new_log_filter_container = document.createElement("div");
 			new_log_filter_container.setAttribute("id", "square-theme-log-filter-container");
@@ -42,19 +33,19 @@
 			new_log_filter_container.append(new_log_list_container);
 			
 			const logs_view = document.getElementById("logs-view");
-			console.log("appending to logs-view");
+			//console.log("appending to logs-view");
 			logs_view.append(new_log_filter_container);
 			
 			log_filter_container = document.getElementById("square-theme-log-filter-container");
 		}
 		
-		console.log("log_filter_container is now:");
-		console.log(log_filter_container);
+		//console.log("log_filter_container is now:");
+		//console.log(log_filter_container);
 	
 		//Check if log filter toggle button is clicked
 		const log_filter_button = document.getElementById('square-theme-log-filter-button');
       	log_filter_button.addEventListener('click', () => {
-      		console.log(this);
+      		//console.log(this);
 			//this.updateInputValue(thermostat.id, -1);
 			const list = document.getElementById('square-theme-log-list-ul');
 			const buttons = document.getElementById('square-theme-log-list-buttons');
@@ -69,13 +60,15 @@
 
 	  
 	  // Console.log(this);
+	  /*
 	  var url = window.location.href;
 	  var lastPart = url.substr(url.lastIndexOf('/') + 1);
 	  if (lastPart === "logs") {
-		  console.log("We started on the logs page");
+		  //console.log("We started on the logs page");
 		  //history.pushState();
 		  
 	  }
+	  */
     }
 
     mutationCallback(mutations) {
@@ -119,12 +112,8 @@
         for (const item of listItems) {
             log_names.push(item.innerHTML);
         }
-        console.log("log item names = " + log_names);
-        //if(log_names.length > 2 ){
         
         const logs_view = document.getElementById("logs-view");
-
-        
 
 		// Clear the log list
 		const log_list_container = document.getElementById("square-theme-log-list-container");
@@ -137,7 +126,7 @@
 
 
         log_names.forEach(function (log_name) {
-            console.log(log_name);
+            //console.log(log_name);
             let li = document.createElement('li');
 
             //li.innerHTML += log_name;
@@ -161,32 +150,6 @@
             li.appendChild(label);
 			
 	  	    li.onclick = function(element_name){
-	  		    console.log("Logs list item clicked");
-	            //console.log(element_name);
-				//console.log(element_name.target.name);
-	  		  	//addLogSelector();
-				
-				
-				/*
-				var values = [];
-				var cbs = document.forms['test'].elements['colors'];
-				for(var i=0,cbLen=cbs.length;i<cbLen;i++){
-				  if(cbs[i].checked){
-				    values.push(cbs[i].value);
-				  } 
-				}
-				alert('You selected: ' + values.join(', '));
-				*/
-				
-
-				
-				/*
-				[].forEach.call(document.querySelectorAll('.logs-log-container'), function (el) {
-					console.log
-					el.style.visibility = 'hidden';
-				});
-				*/
-				
 				
 				// get list of all log names
 				const all_log_name_elements = document.querySelectorAll('#logs-view .logs-log-name');
@@ -206,28 +169,6 @@
 					console.log(selected_log);
                 }
                 console.log("selected log item names = " + selected_log_names);
-				
-				
-				
-
-				
-                //const all_names = document.querySelectorAll(' #logs-view .logs-log-name');
-                
-				/*
-				var all_log_names = [];
-                for (const item of all_names) {
-					
-					if( all_names.indexOf(item.innerHTML) > -1 ){
-						
-					}
-					else{
-						
-					}
-					
-                    log_names.push(item.innerHTML);
-                }
-				*/
-				
 				
 				const all_logs = document.querySelectorAll(' #logs-view .logs-log-container');
 				
@@ -249,8 +190,6 @@
 					}
 					log_counter++;
 				}
-				
-				
 				
 	  	  	}
 			
@@ -282,23 +221,9 @@
 			}
 			
 		}
-			
-		//}
 		
 	}
 
-	/*
-	showLogs(){
-		var values = [];
-		var cbs = document.forms['test'].elements['colors'];
-		for(var i=0,cbLen=cbs.length;i<cbLen;i++){
-		  if(cbs[i].checked){
-		    values.push(cbs[i].value);
-		  } 
-		}
-		alert('You selected: ' + values.join(', '));
-	}
-	*/
 
     updateStyle(elem) {
       const shadow = elem.shadowRoot;
@@ -357,10 +282,7 @@
     }
   }
 
-	//var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  new SquareTheme();
 
-	//if (isChrome) {
-  	new SquareTheme();
-	//}
 })();
  
