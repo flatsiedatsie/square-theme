@@ -233,7 +233,7 @@
         let part = item.getAttribute('id');
         if (part !== null) {
           if (part .indexOf('-') != -1) {
-            part = part.substr(0, part.indexOf('-')); 
+			  part = part.substr(0, part.indexOf('-'));
           }
 
           item.setAttribute('part', part);
