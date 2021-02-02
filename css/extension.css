@@ -28,6 +28,13 @@ h1,h2,h3,h4,h5,h6{
 	/*align-content: center; causes issues */
 }
 
+#things.single-thing{
+	display:flex;
+	flex-wrap:wrap;
+	align-content:center;
+    min-height: calc(100vh - 9.6rem);
+}
+
 #things:not(.single-thing){
 	/*align-content: center;*/
 }
@@ -64,12 +71,6 @@ h1,h2,h3,h4,h5,h6{
 }
 
 #things:not(.single-thing) .thing{
-	/*width: 100vw;
-	display:flex;*/
-	width:180px;
-	height:200px;
-	min-width: 180px;
-	max-width:282px;
 	background-color: #89b6d6;
 	text-align: left;
 	position: relative;
@@ -95,6 +96,13 @@ h1,h2,h3,h4,h5,h6{
 	opacity:.6;
 	font-size:1.2rem;
 	padding-left:.25rem;
+	display:block;
+}
+#things:not(.single-thing) .thing webthing-thermostat-capability.component::part(unit){
+	opacity:.6;
+	font-size:1.2rem;
+	padding-left:.25rem;
+	display:inline;
 }
 
 /*#things > .thing > *:not(a):not(span), */
@@ -125,6 +133,7 @@ h1,h2,h3,h4,h5,h6{
 
 #things.single-thing > .thing > div.thing-detail-container > *{
 	min-height: 150px;
+	position:relative;
 }
 
 
@@ -155,13 +164,70 @@ h1,h2,h3,h4,h5,h6{
 	background-position: center center;
 }
 
-.webthing-color-property-color,
-#things input[type="color"]{
+#things.single-thing > .thing .component::part(color){
 	width:50px;
 	height:50px;
 }
 
 
+/*  attempt to hide "no things yet" message when first visiting the page. */
+/* #things-view.selected, */
+#no-things,
+#onboarding-hint,
+#create-things-hint,
+#create-thing-hint{
+	animation: extension-square-theme-fadeIn 3s linear;
+}
+
+@keyframes extension-square-theme-fadeIn {
+   0% {opacity: 0;}
+   66% {opacity: 0;}
+   100% {opacity: 1;} 
+} 
+
+/*
+@media only screen and (max-width: 640px) {
+
+	#things:not(.single-thing) .thing {
+	    height: auto;
+	    box-sizing: border-box;
+	    min-width: 270px;
+	    max-width: none;
+	    margin: 2rem 0 0 2rem;
+		height:135px;
+		overflow: hidden;
+	}
+	
+	#things:not(.single-thing) > .thing > *:not(a):not(span){
+	    min-height: auto;
+	    max-width: none;
+	    height: 135px;
+	    width: 135px;
+	    margin: 0;
+	    padding: 1rem;
+	    background-color: #2575c7;
+	    box-sizing: border-box;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+	
+	#things:not(.single-thing) .thing span.thing-title {
+	    position: absolute;
+	    width: auto;
+	    display: inline-block;
+	    max-height: none;
+	    height: auto;
+	    font-size: 1.6rem;
+	    top: 6rem;
+	    margin: 0;
+	    box-sizing: border-box;
+	    padding-left: 1.5rem;
+	    top: 50%;
+		padding-right: 1.5rem;
+	    transform: translate(0%, -50%);
+	}
+}
+*/
 
 @media only screen and (max-width: 640px) {
 	/*
@@ -177,9 +243,9 @@ h1,h2,h3,h4,h5,h6{
 	}
 	.thing-detail-container,
 	#things:not(.single-thing) .thing{
-		width: calc(100% - 4rem);
-		    margin-left: 2rem;
-		    margin-bottom: 1rem;
+		/*width: calc(100% - 4rem);*/
+		margin-left: 2rem;
+		margin-bottom: 1rem;
 	}
 	
 	#things.single-thing > .thing > *:not(div){
@@ -192,6 +258,26 @@ h1,h2,h3,h4,h5,h6{
 		width:100%;
 		margin-left:0%;
 	}
+	
+	#things:not(.single-thing) .thing{
+		/*width:calc(50% - 2rem);*/
+		min-width:135px;
+		max-width:none;
+		margin:1rem;
+	}
+	
+	#things.single-thing .component::part(value) {
+	    font-size: 1.6rem;
+	}
+	
+	#things:not(.single-thing) .thing .component::part(unit){
+		display:block;
+	}
+	
+	#things:not(.single-thing) .thing .component::part(unit){
+		display:block;
+	}
+	
 }
 
 .component::part(icon),
@@ -220,7 +306,7 @@ h1,h2,h3,h4,h5,h6{
 
 .component::part(label){
 	color:white;
-	font-size:2rem;
+	/*font-size:2rem;*/
 	line-height:4rem;
 }
 
@@ -238,6 +324,7 @@ h1,h2,h3,h4,h5,h6{
 
 .component::part(contents){
 	/*position:relative;*/
+	left:50%;
 }
 /*
 .component::part(contents) > form{
@@ -253,14 +340,14 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
-webthing-level-property.component::part(slider){
+.webthing-level-property.component::part(slider){
 	width:12rem;
 	margin-left:-2rem;
 	
 }
 
 
-webthing-level-property.component::part(slider)::-webkit-slider-thumb {
+.webthing-level-property.component::part(slider)::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: 1px solid #000000;
   height: 36px;
@@ -280,7 +367,7 @@ webthing-level-property.component::part(slider)::-webkit-slider-thumb {
 #things.single-thing > .thing > div.thing-detail-container > webthing-target-temperature-property{background-color:orange;}
 
 /*  For some reason this one needs some correction.*/
-webthing-target-temperature-property::part(contents){
+.webthing-target-temperature-property::part(contents){
     left: 50%;
 }
 
@@ -313,8 +400,17 @@ webthing-target-temperature-property::part(contents){
 }
 
 
+.webthing-number-property-contents.one-line{
+	left:50%;
+	top:80%;
+}
+
 .thing-title{
 	padding-left:1rem;
+	font-size:1.6rem;
+	margin:0;
+	height:auto;
+	padding-bottom:1rem;
 }
 
 
@@ -648,4 +744,31 @@ webthing-target-temperature-property::part(contents){
 
 .rule-info{
 	height:40%;
+}
+
+
+
+
+@media only screen and (min-width: 641px) {
+	/*
+	#things:not(.single-thing) .thing {
+		min-height:200px;
+	}
+	*/
+	
+	#things:not(.single-thing) .thing{
+		min-width: 175px;
+		max-width:263px;
+	}
+
+}
+	
+	
+	
+@media only screen and (min-width: 1000px) {
+	#things:not(.single-thing) .thing {
+		min-height:200px;
+	}
+	
+
 }
