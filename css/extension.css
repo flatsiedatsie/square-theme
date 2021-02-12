@@ -170,6 +170,12 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
+#things.single-thing > .thing > div.thing-detail-container [data-name="Data transmission"] {
+    background-color:rgba(0,0,0,.1);
+}
+
+
+
 /*  attempt to hide "no things yet" message when first visiting the page. */
 /* #things-view.selected, */
 #no-things,
@@ -465,7 +471,7 @@ h1,h2,h3,h4,h5,h6{
 	position: initial;
 	margin: 0 auto;
 	transform: none;
-	max-height:auto;
+	max-height:none;
 }
 
 
@@ -513,7 +519,6 @@ h1,h2,h3,h4,h5,h6{
 #addon-config-settings .form-group.field.field-boolean > .checkbox{
 	flex-basis:4rem;
 }
-
 
 
 

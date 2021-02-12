@@ -110,7 +110,11 @@
         const listItems = document.querySelectorAll(' #logs-view .logs-log-name');
         var log_names = [];
         for (const item of listItems) {
-            log_names.push(item.innerHTML);
+            //console.log(item.innerHTML);
+            if(item.innerHTML != ""){
+                log_names.push(item.innerHTML);
+            }
+            
         }
         
         const logs_view = document.getElementById("logs-view");
@@ -126,18 +130,18 @@
 
 
         log_names.forEach(function (log_name) {
-            //console.log(log_name);
+            //console.log("log_name = " + log_name);
             let li = document.createElement('li');
 
             //li.innerHTML += log_name;
 
             var input = document.createElement("input");
-                            //input.type = "checkbox";
-                            input.setAttribute('type', 'checkbox');
-                            input.setAttribute('name', log_name);
-                            input.setAttribute('id', log_name);
-                            input.setAttribute('id', log_name);
-                            //input.value = log_name;
+                //input.type = "checkbox";
+                input.setAttribute('type', 'checkbox');
+                input.setAttribute('name', log_name);
+                input.setAttribute('id', log_name);
+                //input.setAttribute('id', log_name);
+                //input.value = log_name;
             
             var label = document.createElement("label");
                             label.setAttribute("for",log_name);
