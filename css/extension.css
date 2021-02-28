@@ -735,7 +735,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
-/*  RULES  */
+/*  RULES OVERVIEW  */
 
 
 .rule{
@@ -750,6 +750,47 @@ h1,h2,h3,h4,h5,h6{
 .rule-info{
 	height:40%;
 }
+
+
+
+/*  RULE CREATION  */
+
+@media only screen and (min-width: 1025px) {
+    
+    #rule-area{
+        height: calc(80% - 9.6rem);
+    }
+    
+    
+    #rule-parts-list-container{
+        position:absolute;
+        bottom:0;
+        height:20%;
+        z-index:16;
+        transition: height 0.05s;
+    }
+    
+    #rule-parts-list-container:hover{
+        height:40%;
+    }
+
+    #rule-parts-list{
+        display:flex;
+        flex-wrap:wrap;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        height:100%;
+        margin:0;
+    }
+    
+    #rule-parts-list-scroll-left,
+    #rule-parts-list-scroll-right{
+        display:none;
+    }
+
+}
+
+
 
 
 
