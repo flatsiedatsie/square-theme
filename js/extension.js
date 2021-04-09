@@ -11,6 +11,7 @@
       // apply the theme after loading
       this.addParts();
       this.addThermostatButtons();
+      this.addThingsSearch();
 	  
 
 		// Create log filter container
@@ -245,6 +246,7 @@
       }
     }
     
+    
     addThermostatButtons() {
       const thermostats = document.getElementsByTagName(
         'webthing-target-temperature-property'
@@ -284,6 +286,61 @@
         }
       }
     }
+    
+    
+    addThingsSearch() {
+        const thing_view = document.getElementById("things-view");
+        const things = document.getElementById("things");
+        const things_count = things.children.length;
+        
+		if(things_count > 20){
+            // Create checkbox list
+            let search_container = document.createElement('div');
+            search_container.setAttribute("id", "square-theme-things-search-container");
+            let search_input = document.createElement('input');
+            search_input.setAttribute("id", "square-theme-things-search-input");
+            search_input.setAttribute("placeholder", "search");
+        
+            search_container.appendChild(search_input);
+            thing_view.appendChild(search_container);
+        
+            const search_input_element = document.getElementById("square-theme-things-search-input");
+            search_input_element.onkeyup = function(element_name){
+                
+                var search_string = search_input_element.value.toLowerCase();
+                //console.log("search_string = " + search_string);
+                
+                if(search_string.length > 2){
+                    
+                    for (var i = 0; i < things_count; i++) {
+                          var child = things.childNodes[i];
+                          child.style.display = "none";
+                    }
+                    for (var i = 0; i < things_count; i++) {
+                        const child = things.childNodes[i];
+                        
+                        var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
+                        thing_title = thing_title.toLowerCase();
+                        
+                        if(thing_title.indexOf(search_string) !== -1){
+                            child.style.display = "block";
+                        }
+                        
+                    }
+                    
+                }
+                else{
+                    for (var i = 0; i < things_count; i++) {
+                          things.childNodes[i].style.display = "block";
+                    }
+                }
+                
+            }
+        }
+        
+        
+    }
+    
   }
 
   new SquareTheme();

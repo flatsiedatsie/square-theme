@@ -7,6 +7,24 @@ h1,h2,h3,h4,h5,h6{
 	font-family: 'Open Sans', sans-serif;
 }
 
+
+
+/*  Things search field  */
+
+#square-theme-things-search-container{
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+}
+#square-theme-things-search-input{
+    border:none;
+    padding:.5rem;
+    border-radius:.5rem;
+}
+
+
+/*  Things general changes*/
+
 #thing-title-title{font-size:2rem;}
 
 .thing{
