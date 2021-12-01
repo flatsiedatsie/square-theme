@@ -13,9 +13,11 @@
   "description": "A theme that removes the octopus view, and adds setpoint buttons",
   "gateway_specific_settings": {
     "webthings": {
+	  "exec": "python3 {path}/main.py",
       "primary_type": "extension",
       "strict_max_version": "*",
-      "strict_min_version": "0.10.0"
+      "strict_min_version": "0.10.0",
+	  "enabled": true
     }
   },
   "homepage_url": "https://github.com/flatsiedatsie/square-theme",
@@ -24,7 +26,7 @@
   "manifest_version": 1,
   "name": "Square Theme",
   "short_name": "Square",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "web_accessible_resources": [
     "css/*.css",
     "js/*.js"

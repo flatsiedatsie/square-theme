@@ -8,9 +8,10 @@ import sys
 import time
 
 sys.path.append(path.join(path.dirname(path.abspath(__file__)), 'lib'))
-
-from pkg.square_theme import SquareThemeAPIHandler  # noqa
-
+try:
+    from pkg.square_theme import SquareThemeAPIHandler  # noqa
+except Exception as ex:
+    print(ex)
 
 
 _HANDLER = None
