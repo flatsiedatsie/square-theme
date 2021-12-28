@@ -599,7 +599,7 @@
             search_input_element.onkeyup = function(element_name){
                 
                 var search_string = search_input_element.value.toLowerCase();
-                //console.log("search_string = " + search_string);
+                console.log("onkeyup search_string = " + search_string);
                 
                 if(search_string.length > 2){
                     
@@ -627,6 +627,39 @@
                 }
                 
             }
+            
+            search_input_element.onsearch = function(element_name){
+                
+                var search_string = search_input_element.value.toLowerCase();
+                console.log("onsearch search_string = " + search_string);
+                
+                if(search_string.length > 2){
+                    
+                    for (var i = 0; i < things_count; i++) {
+                          var child = things.childNodes[i];
+                          child.style.display = "none";
+                    }
+                    for (var i = 0; i < things_count; i++) {
+                        const child = things.childNodes[i];
+                        
+                        var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
+                        thing_title = thing_title.toLowerCase();
+                        
+                        if(thing_title.indexOf(search_string) !== -1){
+                            child.style.display = "block";
+                        }
+                        
+                    }
+                    
+                }
+                else{
+                    for (var i = 0; i < things_count; i++) {
+                          things.childNodes[i].style.display = "block";
+                    }
+                }
+                
+            }
+            
         }
     }
     

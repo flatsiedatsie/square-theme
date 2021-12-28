@@ -21,6 +21,7 @@ h1,h2,h3,h4,h5,h6{
     border:none;
     padding:.5rem;
     border-radius:.5rem;
+    width:8rem;
 }
 
 
@@ -128,9 +129,11 @@ h1,h2,h3,h4,h5,h6{
 #things.single-thing > .thing .component::part(webthing-boolean-property-label):not([value]){
     box-shadow: 5px 5px;
 }
+/*
 #things.single-thing > .thing .component::part(webthing-boolean-property-label):not([value]):after{
     content:"?";
 }
+*/
 
 /*
 #things.single-thing > .thing .component::part(checkbox):not([value]){
@@ -146,6 +149,10 @@ h1,h2,h3,h4,h5,h6{
 	box-shadow: 6px 6px teal;
 }
 */
+
+.media-modal-video{
+    background-color:black;
+}
 
 #things:not(.single-thing) > .thing > *:not(a):not(span),
 #things.single-thing > .thing > *:not(div),
@@ -872,6 +879,10 @@ h1,h2,h3,h4,h5,h6{
 	height:40%;
 }
 
+
+.rule-part-container.open .property-select-option select{
+    max-width:50%;
+}
 
 
 /*  RULE CREATION  */
