@@ -57,6 +57,7 @@
             
 			var new_log_filter_container = document.createElement("div");
 			new_log_filter_container.setAttribute("id", "square-theme-log-filter-container");
+            new_log_filter_container.setAttribute("class", "square-theme-log-filter-container-hidden");
 			
 			// Create log list toggle button
             let toggle = document.createElement('div');
@@ -81,6 +82,14 @@
 			
             
 			log_filter_container = document.getElementById("square-theme-log-filter-container");
+            
+            this.showLogCollections(); // adds the collection buttons at the top
+			
+            
+            window.setTimeout(() => {
+                this.addLogSelector(); // adds the checkbox list
+            }, 2000);
+            
 		}
 		
 		//console.log("log_filter_container is now:");
@@ -89,22 +98,31 @@
 		//Check if log filter toggle button is clicked
 		const log_filter_button = document.getElementById('square-theme-log-filter-button');
       	log_filter_button.addEventListener('click', () => {
-      		//console.log(this);
+      		console.log("clicked on log filter toggl button. This:", this);
 			//this.updateInputValue(thermostat.id, -1);
+            //const log_filter_container document.getElementById('square-theme-log-filter-container');
+            
+	        if (log_filter_container.classList.contains('square-theme-log-filter-container-hidden')) {
+				log_filter_container.classList.remove('square-theme-log-filter-container-hidden');
+		  	}
+			else{
+				log_filter_container.classList.add('square-theme-log-filter-container-hidden');
+                
+			}
+            
+            /*
 			const list = document.getElementById('square-theme-log-list-ul');
-			const buttons = document.getElementById('square-theme-log-list-buttons');
+			//const buttons = document.getElementById('square-theme-log-list-buttons');
 			if(!list){
-                this.showLogCollections();
-				this.addLogSelector();
+                this.showLogCollections(); // adds the collection buttons at the top
+				this.addLogSelector(); // adds the checkbox list
 			}
 			else{
-				list.parentNode.removeChild(list);
-				buttons.parentNode.removeChild(buttons);
-                //let collection_button_container = document.getElementById('square-theme-log-collections-container');
-                //collection_button_container.parentNode.removeChild(collection_button_container);
-                document.getElementById('square-theme-log-collections-container').innerHTML = "";
-                //document.getElementById('logs-view').classList.remove('square-theme-logs-overlay');
+                this.hideLogMenu();
 			}
+            
+            new_log_filter_container.setAttribute("class", "square-theme-log-filter-container-hidden");
+            */
       	});
 
 	  
@@ -144,7 +162,8 @@
     messageAreaCallback(mutations) {        
         
         function upgrade(){
-            setTimeout(function(){ 
+            //setTimeout(function(){ 
+            window.setTimeout(() => { 
                 const message_array = document.getElementById('message-area').innerText.split(":", 3);
                 //console.log(message_array);
                 if(message_array.length > 2){
@@ -276,22 +295,41 @@
 		let filter_buttons = document.createElement('div');
 		filter_buttons.setAttribute("id", "square-theme-log-list-buttons");
 		
-		
+        // Clear button
+		let clear_button = document.createElement('button');
+		clear_button.setAttribute("id", "square-theme-logs-clear-button");
+        clear_button.setAttribute("class", "square-theme-logs-small-button");
+		clear_button.textContent = "Clear";
+		filter_buttons.appendChild(clear_button)
+        
+		// Overlay button
 		let overlay_button = document.createElement('button');
 		overlay_button.setAttribute("id", "square-theme-logs-overlay-button");
         overlay_button.setAttribute("class", "square-theme-logs-small-button");
 		overlay_button.textContent = "Overlay";
 		filter_buttons.appendChild(overlay_button)
         
+        // Add collection button
 		let collection_button = document.createElement('button');
 		collection_button.setAttribute("id", "square-theme-logs-add-collection-button");
         collection_button.setAttribute("class", "square-theme-logs-small-button");
 		collection_button.textContent = "Add collection";
 		filter_buttons.appendChild(collection_button)
         
+
+        
+        
 		log_list_container.appendChild(filter_buttons)
 		
-		document.getElementById("square-theme-logs-overlay-button").onclick = function(element_name){
+        
+		document.getElementById("square-theme-logs-clear-button").onclick = (event) => {
+  		    console.log("Clear button clicked");
+            this.addLogSelector();
+            this.filterLogs();
+		}
+        
+        
+		document.getElementById("square-theme-logs-overlay-button").onclick = (event) => {
   		    //console.log("Overlay button clicked");
 			
 	        if (logs_view.classList.contains('square-theme-logs-overlay')) {
@@ -300,9 +338,8 @@
 			else{
 				logs_view.classList.add('square-theme-logs-overlay');
 			}
-			
 		}
-        
+
         
         if (localStorage.getItem("square_theme_log_collections") !== null) {
             this.showLogCollections();
@@ -342,6 +379,8 @@
 		}
         
 		
+        //this.filterLogs(); // resets the filtered logs to no filter
+        
 	}
 
 
@@ -423,6 +462,7 @@
     }
 
 
+    // Creates collection buttons
     showLogCollections(){
         console.log("in showLogCollections");
         
@@ -449,7 +489,7 @@
     		new_collection_button.setAttribute("class", "square-theme-logs-collection-button square-theme-logs-small-button");
     		new_collection_button.textContent = collection_name;
             
-            
+            // on a click, set the checkboxes to the correct position
             new_collection_button.onclick = (event) => { //function(element_name){
                 console.log("collection button clicked", event.target.innerText);
                 console.log(this);
@@ -470,7 +510,13 @@
                     }
                 }
                 
+                // finally, call filter logs with the new checkboxes settings
                 this.filterLogs();
+                
+                // remove sidebar when collection button is clicked
+                //this.hideLogMenu();
+                //document.getElementById('square-theme-log-collections-container').innerHTML = "";
+                document.getElementById('square-theme-log-filter-container').classList.add('square-theme-log-filter-container-hidden');
                 
             };
             
@@ -502,6 +548,20 @@
     		document.getElementById('square-theme-log-collections-container').appendChild(new_collection_button_container);
             
         });
+    }
+
+
+    hideLogMenu(){
+        console.log("in hideLogMenu");
+		const list = document.getElementById('square-theme-log-list-ul');
+		const buttons = document.getElementById('square-theme-log-list-buttons');
+        
+		list.parentNode.removeChild(list);
+		buttons.parentNode.removeChild(buttons);
+        //let collection_button_container = document.getElementById('square-theme-log-collections-container');
+        //collection_button_container.parentNode.removeChild(collection_button_container);
+        document.getElementById('square-theme-log-collections-container').innerHTML = "";
+        //document.getElementById('logs-view').classList.remove('square-theme-logs-overlay');
     }
 
 

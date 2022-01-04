@@ -315,6 +315,8 @@ h1,h2,h3,h4,h5,h6{
 	
 	#things.single-thing .component::part(value) {
 	    font-size: 1.6rem;
+        height:100%;
+        overflow:scroll;
 	}
 	
 	#things:not(.single-thing) .thing .component::part(unit){
@@ -651,6 +653,11 @@ h1,h2,h3,h4,h5,h6{
 
 #logs-view.solo-view #square-theme-log-filter-container{
 	display:none;
+}
+
+
+#logs-view #square-theme-log-filter-container.square-theme-log-filter-container-hidden{
+    display:none;
 }
 
 
