@@ -2,22 +2,34 @@
   class SquareTheme extends window.Extension {
     constructor() {
       super('square-theme');
+      
+      // Create observer for the things overview
       this.observer = new MutationObserver(this.mutationCallback.bind(this));
       this.observer.observe(
         document.getElementById('things'),
         {childList: true}
       );
       
+      // upgrade the style of messages that can show up in the bottom of the window
       this.message_area_observer = new MutationObserver(this.messageAreaCallback.bind(this));
       this.message_area_observer.observe(
         document.getElementById('message-area'),
         {childList: true}
       );
             
+      this.check_keyboard = false;
+      this.previous_document_location = null;
+            
       // apply the theme after loading
       this.addParts();
       this.addThermostatButtons();
       this.addThingsSearch();
+      /*
+      setTimeout(() => {
+          console.log('delayed adding of the search button');
+          this.addThingsSearch();
+      }, 1000);
+      */
 	  
       
       document.addEventListener('keydown', function(event){
@@ -174,19 +186,36 @@
                 //this.addThermostatButtons();
             }
         }
-      console.log("mutations, should_upgrade = " + should_upgrade);
+      //console.log("mutations, should_upgrade = " + should_upgrade);
       if(should_upgrade){
           //console.log("should add parts and thermostat buttons");
           this.addParts();
           this.addThermostatButtons();
       }
       
-      if(document.location.href.endsWith("/things")){
-          document.getElementById('square-theme-things-search-container').style.display = 'block';
-      }else{
-          document.getElementById('square-theme-things-search-container').style.display = 'none';
-          document.getElementById('square-theme-things-search-input').value = '';
+      try{
+          
+          if(document.location.href != this.previous_document_location){
+              this.previous_document_location = document.location.href;
+              console.log("SWITCHED PAGES");
+              if(document.location.href.endsWith("/things")){
+                  this.addThingsSearch();
+              }
+          }
+          
+          
+          
+          if(this.check_keyboard){
+              if(document.location.href.endsWith("/things")){
+                  document.getElementById('square-theme-things-search-container').style.display = 'block';
+              }else{
+                  document.getElementById('square-theme-things-search-container').style.display = 'none';
+                  document.getElementById('square-theme-things-search-input').value = '';
+              }
+          }
       }
+      catch(e){}
+
     }
     
     messageAreaCallback(mutations) {        
@@ -674,89 +703,98 @@
     
     
     addThingsSearch() {
+        console.log("in addThingsSearch");
         const thing_view = document.getElementById("things-view");
         const things = document.getElementById("things");
         const things_count = things.children.length;
         
-		if(things_count > 10){
-            // Create checkbox list
-            let search_container = document.createElement('div');
-            search_container.setAttribute("id", "square-theme-things-search-container");
-            let search_input = document.createElement('input');
-            search_input.setAttribute("id", "square-theme-things-search-input");
-            search_input.setAttribute("type", "search");
-            search_input.setAttribute("name", "square-theme-search-input");
-            search_input.setAttribute("placeholder", "search");
+        console.log("thing_view: ", thing_view);
+        console.log("typeof search container: " + typeof document.getElementById('square-theme-things-search-container'), document.getElementById('square-theme-things-search-container'));
+        if(document.getElementById('square-theme-things-search-container') == null){
+    		if(things_count > 10){
+                // Create checkbox list
+                let search_container = document.createElement('div');
+                search_container.setAttribute("id", "square-theme-things-search-container");
+                let search_input = document.createElement('input');
+                search_input.setAttribute("id", "square-theme-things-search-input");
+                search_input.setAttribute("type", "search");
+                search_input.setAttribute("name", "square-theme-search-input");
+                search_input.setAttribute("placeholder", "search");
         
-            search_container.appendChild(search_input);
-            thing_view.appendChild(search_container);
+                search_container.appendChild(search_input);
+                thing_view.appendChild(search_container);
         
-            const search_input_element = document.getElementById("square-theme-things-search-input");
-            search_input_element.onkeyup = function(element_name){
+                const search_input_element = document.getElementById("square-theme-things-search-input");
+                search_input_element.onkeyup = function(element_name){
                 
-                var search_string = search_input_element.value.toLowerCase();
-                //console.log("onkeyup search_string = " + search_string);
+                    var search_string = search_input_element.value.toLowerCase();
+                    //console.log("onkeyup search_string = " + search_string);
                 
-                if(search_string.length > 0){
+                    if(search_string.length > 0){
                     
-                    for (var i = 0; i < things_count; i++) {
-                          var child = things.childNodes[i];
-                          child.style.display = "none";
-                    }
-                    for (var i = 0; i < things_count; i++) {
-                        const child = things.childNodes[i];
-                        
-                        var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
-                        thing_title = thing_title.toLowerCase();
-                        
-                        if(thing_title.indexOf(search_string) !== -1){
-                            child.style.display = "block";
+                        for (var i = 0; i < things_count; i++) {
+                              var child = things.childNodes[i];
+                              child.style.display = "none";
                         }
+                        for (var i = 0; i < things_count; i++) {
+                            const child = things.childNodes[i];
                         
-                    }
-                    
-                }
-                else{
-                    for (var i = 0; i < things_count; i++) {
-                          things.childNodes[i].style.display = "block";
-                    }
-                }
-                
-            }
-            
-            search_input_element.onsearch = function(element_name){
-                
-                var search_string = search_input_element.value.toLowerCase();
-                //console.log("onsearch search_string = " + search_string);
-                
-                if(search_string.length > 2){
-                    
-                    for (var i = 0; i < things_count; i++) {
-                          var child = things.childNodes[i];
-                          child.style.display = "none";
-                    }
-                    for (var i = 0; i < things_count; i++) {
-                        const child = things.childNodes[i];
+                            var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
+                            thing_title = thing_title.toLowerCase();
                         
-                        var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
-                        thing_title = thing_title.toLowerCase();
+                            if(thing_title.indexOf(search_string) !== -1){
+                                child.style.display = "block";
+                            }
                         
-                        if(thing_title.indexOf(search_string) !== -1){
-                            child.style.display = "block";
                         }
-                        
-                    }
                     
-                }
-                else{
-                    for (var i = 0; i < things_count; i++) {
-                          things.childNodes[i].style.display = "block";
                     }
+                    else{
+                        for (var i = 0; i < things_count; i++) {
+                              things.childNodes[i].style.display = "block";
+                        }
+                    }
+                    this.check_keyboard = true;
                 }
-                
-            }
             
+                search_input_element.onsearch = function(element_name){
+                
+                    var search_string = search_input_element.value.toLowerCase();
+                    //console.log("onsearch search_string = " + search_string);
+                
+                    if(search_string.length > 2){
+                    
+                        for (var i = 0; i < things_count; i++) {
+                              var child = things.childNodes[i];
+                              child.style.display = "none";
+                        }
+                        for (var i = 0; i < things_count; i++) {
+                            const child = things.childNodes[i];
+                        
+                            var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
+                            thing_title = thing_title.toLowerCase();
+                        
+                            if(thing_title.indexOf(search_string) !== -1){
+                                child.style.display = "block";
+                            }
+                        
+                        }
+                    
+                    }
+                    else{
+                        for (var i = 0; i < things_count; i++) {
+                              things.childNodes[i].style.display = "block";
+                        }
+                    }
+                
+                }
+            
+            }
         }
+        else{
+            console.log("search input already existed");
+        }
+		
     }
     
     
