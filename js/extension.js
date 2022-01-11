@@ -19,6 +19,14 @@
       this.addThermostatButtons();
       this.addThingsSearch();
 	  
+      
+      document.addEventListener('keydown', function(event){
+          if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
+              document.getElementById('square-theme-things-search-input').focus();
+          }
+          
+      });
+      
       //localStorage.setItem("square_theme_log_collections", JSON.stringify({}));
       
 
@@ -157,7 +165,7 @@
     }
 
     mutationCallback(mutations) {
-        //console.log("new mutations:", mutations);
+        console.log("new mutations:", mutations);
         var should_upgrade = false;
         for (const mutation of mutations) {
             if (mutation.addedNodes.length > 0) {
@@ -670,7 +678,7 @@
         const things = document.getElementById("things");
         const things_count = things.children.length;
         
-		if(things_count > 20){
+		if(things_count > 10){
             // Create checkbox list
             let search_container = document.createElement('div');
             search_container.setAttribute("id", "square-theme-things-search-container");
@@ -689,7 +697,7 @@
                 var search_string = search_input_element.value.toLowerCase();
                 //console.log("onkeyup search_string = " + search_string);
                 
-                if(search_string.length > 2){
+                if(search_string.length > 0){
                     
                     for (var i = 0; i < things_count; i++) {
                           var child = things.childNodes[i];
