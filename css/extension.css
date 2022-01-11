@@ -1,10 +1,8 @@
-/*
-#main-menu #extension-square-theme-menu-item {
-  background-image: url('../images/menu-icon.svg');
-}
-*/
+/*  Square theme CSS  */
+
+
 h1,h2,h3,h4,h5,h6{
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans', sans-serif!important;
 }
 
 
@@ -33,10 +31,11 @@ h1,h2,h3,h4,h5,h6{
 	border-radius: 0.5rem;
 }
 
-
 #things{
+    opacity:0;
+    /*display:none;*/
+    display:flex;
 	text-align:left;
-	display: flex;
 	flex-flow: wrap;
     width: calc(100% - 19.2rem);
     margin-left: 8.6rem;
@@ -46,10 +45,20 @@ h1,h2,h3,h4,h5,h6{
 	height:auto;
 	max-height: none;
 	/*align-content: center; causes issues */
+    
 }
 
+
+#things-view.square-theme-things-mutated #things{
+    display: flex!important;
+    opacity:1;
+    transition: opacity .2s;
+}
+
+
+
 #things.single-thing{
-	display:flex!important;
+	/*display:flex!important;*/
 	flex-wrap:wrap;
 	align-content:center;
     min-height: calc(100vh - 9.6rem);
@@ -77,6 +86,11 @@ h1,h2,h3,h4,h5,h6{
 .thing-details-link{
 	left:auto;
 	right:0;
+    border-bottom-left-radius:.5rem;
+}
+
+.thing-details-link:hover{
+    background-color:rgba(0,0,0,.2);
 }
 
 .thing-detail-container{
@@ -95,7 +109,11 @@ h1,h2,h3,h4,h5,h6{
 	text-align: left;
 	position: relative;
 	flex-grow:1;
+    overflow:hidden;
 	/*flex-basis:0;*/
+    /*display: flex;
+    flex-direction: column;
+    justify-content: space-between;*/
 }
 
 #things.single-thing > .thing {
@@ -106,7 +124,10 @@ h1,h2,h3,h4,h5,h6{
 }
 
 #things:not(.single-thing) .thing span.thing-title{
-	width:calc(100% - 2rem);
+	/*width:calc(100% - 2rem);*/
+    width:100%;
+    box-sizing:border-box;
+    padding:.5rem 1rem 1rem 1rem;
 }
 
 #things:not(.single-thing) .thing .component::part(contents){
@@ -171,7 +192,32 @@ h1,h2,h3,h4,h5,h6{
 #things:not(.single-thing) > .thing > *:not(a):not(span),
 #things.single-thing > .thing > *:not(div){
 	min-height: 140px;
+    /*margin-bottom: 0.5rem;*/
+    margin-top: 1rem;
+    /*border-bottom: 1px solid rgba(0,0,0,.1);
+    border-radius: 0;
+    box-shadow: 0 100px 0 rgb(0 0 0 / 3%);*/
 }
+
+
+/*  hide components until they are upgraded  */
+/*
+#things.single-thing > .thing > *:not(div),
+#things.single-thing > .thing > div.thing-detail-container > *,
+#things:not(.single-thing) > .thing > *:not(a):not(span){
+    opacity:0;
+}
+
+#things.single-thing > .thing > .component,
+#things.single-thing > .thing > div.thing-detail-container > .component,
+#things.single-thing > .thing > div.thing-detail-container > .component + *,
+#things:not(.single-thing) > .thing > .component{
+    opacity:1;
+    transition: opacity .6s;  
+}
+*/
+
+
 
 #things.single-thing > .thing > div.thing-detail-container > *{
 	min-height: 150px;
@@ -199,6 +245,7 @@ h1,h2,h3,h4,h5,h6{
 
 #things.single-thing > .thing > *:not(div)::part(container){
 	height:100%;
+    overflow:auto;
 }
 
 
@@ -212,6 +259,8 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
+#things.single-thing > .thing > div.thing-detail-container [data-name="Data collection"],
+#things.single-thing > .thing > div.thing-detail-container [data-name="data transmission"],
 #things.single-thing > .thing > div.thing-detail-container [data-name="Data transmission"] {
     background-color:rgba(0,0,0,.1);
 }
@@ -635,7 +684,7 @@ h1,h2,h3,h4,h5,h6{
 
 
 
-/*  LOGS OVERVIEW  */
+/*  LOGS LOGGING OVERVIEW  */
 
 
 #logs-view:not(.solo-view) #square-theme-log-filter-container{
@@ -711,6 +760,7 @@ h1,h2,h3,h4,h5,h6{
 
 #square-theme-log-list-container{
     overflow:scroll;
+    padding-bottom:4rem;
 }
 
 #square-theme-log-list-container li{
@@ -761,6 +811,14 @@ h1,h2,h3,h4,h5,h6{
 
 #square-theme-log-filter-container span{
 	font-size:1.3rem;
+}
+
+
+#square-theme-log-list-buttons{
+    position:absolute;
+    bottom:0;
+    background-color:#5288af;
+    width:100%;
 }
 
 

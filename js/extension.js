@@ -98,7 +98,7 @@
 		//Check if log filter toggle button is clicked
 		const log_filter_button = document.getElementById('square-theme-log-filter-button');
       	log_filter_button.addEventListener('click', () => {
-      		console.log("clicked on log filter toggl button. This:", this);
+      		//console.log("clicked on log filter toggle button. This:", this);
 			//this.updateInputValue(thermostat.id, -1);
             //const log_filter_container document.getElementById('square-theme-log-filter-container');
             
@@ -110,13 +110,19 @@
                 
 			}
             
-            /*
 			const list = document.getElementById('square-theme-log-list-ul');
 			//const buttons = document.getElementById('square-theme-log-list-buttons');
-			if(!list){
-                this.showLogCollections(); // adds the collection buttons at the top
-				this.addLogSelector(); // adds the checkbox list
+			if(typeof list != 'undefined'){
+                if(list.querySelectorAll("li").length == 0){
+                    //console.log("there were no checkboxes yet");
+                    //this.showLogCollections(); // adds the collection buttons at the top
+    				this.addLogSelector(); // adds the checkbox list
+    			}
 			}
+            
+            
+            /*
+
 			else{
                 this.hideLogMenu();
 			}
@@ -151,11 +157,27 @@
     }
 
     mutationCallback(mutations) {
-      for (const mutation of mutations) {
-        if (mutation.addedNodes.length > 0) {
+        //console.log("new mutations:", mutations);
+        var should_upgrade = false;
+        for (const mutation of mutations) {
+            if (mutation.addedNodes.length > 0) {
+                should_upgrade = true
+                //this.addParts();
+                //this.addThermostatButtons();
+            }
+        }
+      console.log("mutations, should_upgrade = " + should_upgrade);
+      if(should_upgrade){
+          //console.log("should add parts and thermostat buttons");
           this.addParts();
           this.addThermostatButtons();
-        }
+      }
+      
+      if(document.location.href.endsWith("/things")){
+          document.getElementById('square-theme-things-search-container').style.display = 'block';
+      }else{
+          document.getElementById('square-theme-things-search-container').style.display = 'none';
+          document.getElementById('square-theme-things-search-input').value = '';
       }
     }
     
@@ -204,6 +226,7 @@
       target.value = value + adjustment;
       target.dispatchEvent(new Event('change'));
     }
+    
 
     addParts() {
       const items = [
@@ -219,6 +242,11 @@
           item.classList.add('component');
           this.updateStyle(item);
         }
+      }
+      //console.log("listItems.length in addParts: " + listItems.length);
+      if(listItems.length){
+          //console.log("adding mutation indicator class");
+          document.getElementById('things-view').classList.add("square-theme-things-mutated");
       }
     }
 
@@ -323,7 +351,7 @@
 		
         
 		document.getElementById("square-theme-logs-clear-button").onclick = (event) => {
-  		    console.log("Clear button clicked");
+  		    //console.log("Clear button clicked");
             this.addLogSelector();
             this.filterLogs();
 		}
@@ -346,9 +374,9 @@
         }
         
 		document.getElementById("square-theme-logs-add-collection-button").onclick = (event) => {//.onclick = function(event){
-  		    console.log("Add collection button clicked");
-            console.log("event: ", event);
-            console.log("this:",this);
+  		    //console.log("Add collection button clicked");
+            //console.log("event: ", event);
+            //console.log("this:",this);
             
             this.addLogCollection();
             
@@ -393,7 +421,7 @@
 			//console.log(log_name_element);
 			//console.log(log_name_element.innerHTML);
         }
-		console.log("all log item names = " + all_log_names);
+		//console.log("all log item names = " + all_log_names);
 		
 		// get list of selected log names
         const selected_logs = document.querySelectorAll(' #logs-view #square-theme-log-list-ul input:checked');
@@ -402,23 +430,23 @@
             selected_log_names.push(selected_log.name);
 			//console.log(selected_log);
         }
-        console.log("selected log item names = " + selected_log_names);
+        //console.log("selected log item names = " + selected_log_names);
 		
 		const all_logs = document.querySelectorAll(' #logs-view .logs-log-container');
-		console.log(all_logs);
+		//console.log(all_logs);
         
 		var log_counter = 0;
 		for (const log_container of all_logs) {
-            console.log("comparing:", log_container);
-			console.log("comparing to:", all_log_names[log_counter]);
+            //console.log("comparing:", log_container);
+			//console.log("comparing to:", all_log_names[log_counter]);
 			// If the current corresponding name is in the selected arrays name
 			if( selected_log_names.indexOf(all_log_names[log_counter]) > -1 || selected_log_names.length == 0 ){
-				console.log("do not hide " + all_log_names[log_counter]);
+				//console.log("do not hide " + all_log_names[log_counter]);
 				//log_container.style.visibility = 'visible';
 				log_container.style.display = 'block';
 			}
 			else{
-				console.log("hiding log container: " + all_log_names[log_counter]);
+				//console.log("hiding log container: " + all_log_names[log_counter]);
 				//console.log(log_container);
 				//log_container.style.visibility = 'hidden';
 				log_container.style.display = 'none';
@@ -439,7 +467,7 @@
         var selected_log_names = [];
         for (const selected_log of selected_logs) {
             selected_log_names.push(selected_log.name);
-			console.log(selected_log);
+			//console.log(selected_log);
         }
         
         if( selected_logs.length > 0){
@@ -447,8 +475,8 @@
             let collection_name = prompt("What should this collection be called?");
         
             if(collection_name != ""){
-                console.log("collection_name = " + collection_name);
-                console.log("selected: ", selected_log_names);
+                //console.log("collection_name = " + collection_name);
+                //console.log("selected: ", selected_log_names);
                 log_collections[collection_name] = selected_log_names; //.push({'name':collection_name,'logs':selected_log_names});
         
                 localStorage.setItem("square_theme_log_collections", JSON.stringify(log_collections));
@@ -464,15 +492,15 @@
 
     // Creates collection buttons
     showLogCollections(){
-        console.log("in showLogCollections");
+        //console.log("in showLogCollections");
         
         var log_collections = {};
         if (localStorage.getItem("square_theme_log_collections") !== null) {
-            console.log("localStorage had log collection data:", localStorage.getItem("square_theme_log_collections") );
+            //console.log("localStorage had log collection data:", localStorage.getItem("square_theme_log_collections") );
             log_collections = JSON.parse( localStorage.getItem("square_theme_log_collections") );
         }
         else{
-            console.log("browser local storage had no collections");
+            //console.log("browser local storage had no collections");
             return;
         }
         
@@ -483,7 +511,7 @@
         document.getElementById('square-theme-log-collections-container').innerHTML = "";
         
         collection_names.forEach((collection_name, index) => {
-            console.log(`${collection_name}: ${log_collections[collection_name]}`);
+            //console.log(`${collection_name}: ${log_collections[collection_name]}`);
             
     		let new_collection_button = document.createElement('button');
     		new_collection_button.setAttribute("class", "square-theme-logs-collection-button square-theme-logs-small-button");
@@ -491,21 +519,21 @@
             
             // on a click, set the checkboxes to the correct position
             new_collection_button.onclick = (event) => { //function(element_name){
-                console.log("collection button clicked", event.target.innerText);
-                console.log(this);
-                console.log("log_collections: ", log_collections);
-                console.log("log_collection: ", log_collections[event.target.innerText]);
+                //console.log("collection button clicked", event.target.innerText);
+                //console.log(this);
+                //console.log("log_collections: ", log_collections);
+                //console.log("log_collection: ", log_collections[event.target.innerText]);
                 let should_check = log_collections[event.target.innerText];
                 const log_checkboxes = document.querySelectorAll(' #logs-view #square-theme-log-list-ul input');
 
                 for (const checkbox of log_checkboxes) {
                     
                     if(should_check.indexOf(checkbox.name) == -1){
-                        console.log("should not check");
+                        //console.log("should not check");
                         checkbox.checked = false;
                     }
                     else{
-                        console.log("should check: " + checkbox.name);
+                        //console.log("should check: " + checkbox.name);
                         checkbox.checked = true;
                     }
                 }
@@ -526,8 +554,8 @@
     		//new_collection_delete_button.textContent = "✖";
             new_collection_delete_button.innerHTML = '&#10006;';
             new_collection_delete_button.onclick = (event) => {
-                console.log(collection_name);
-                console.log(event);
+                //console.log(collection_name);
+                //console.log(event);
                 if(confirm('Are you sure you want to remove the "' + collection_name + '" collection?')){
                     let parent = event.target.parentElement;
                     parent.parentNode.removeChild(parent);
@@ -552,7 +580,7 @@
 
 
     hideLogMenu(){
-        console.log("in hideLogMenu");
+        //console.log("in hideLogMenu");
 		const list = document.getElementById('square-theme-log-list-ul');
 		const buttons = document.getElementById('square-theme-log-list-buttons');
         
@@ -659,7 +687,7 @@
             search_input_element.onkeyup = function(element_name){
                 
                 var search_string = search_input_element.value.toLowerCase();
-                console.log("onkeyup search_string = " + search_string);
+                //console.log("onkeyup search_string = " + search_string);
                 
                 if(search_string.length > 2){
                     
@@ -691,7 +719,7 @@
             search_input_element.onsearch = function(element_name){
                 
                 var search_string = search_input_element.value.toLowerCase();
-                console.log("onsearch search_string = " + search_string);
+                //console.log("onsearch search_string = " + search_string);
                 
                 if(search_string.length > 2){
                     
