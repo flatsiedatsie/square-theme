@@ -396,7 +396,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 #onboarding-hint,
 #create-things-hint,
 #create-thing-hint{
-	animation: extension-square-theme-fadeIn 3s linear;
+	animation: extension-square-theme-fadeIn 1s linear;
 }
 
 
@@ -520,7 +520,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	
 }
 
-.component::part(icon),
+
 .component::part(container){
 	width:100%;
 	border:none;
@@ -528,8 +528,21 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	background-color: transparent;
 	background-position: center center;
 	/*margin-top:1rem;*/
+    display:flex;
+    align-items:center;
+    justify-content:center;
     
 }
+.component::part(icon){
+	border:none;
+	border-radius:0;
+	background-color: transparent;
+	background-position: center center;
+    max-width:10rem;
+    margin: 0 auto;
+}
+
+
 .component::part(container){
     display: flex;
     flex-direction: column;
@@ -557,12 +570,13 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 
 #things.single-thing .component::part(value){
 	font-size:2.4rem;
+    margin-right:.2rem;
     /*
     -webkit-animation: hideThenFadeIn 1s ease-out;
     -moz-animation: hideThenFadeIn 1s ease-out;
     -o-animation: hideThenFadeIn 1s ease-out;
     animation: hideThenFadeIn 1s ease-out;*/
-    animation: extension-square-theme-fadeIn 3s linear;
+    animation: extension-square-theme-fadeIn 1s linear;
 }
 
 #things.single-thing .component::part(button){
@@ -573,6 +587,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 
 #things.single-thing > .thing > .component:not(div)::part(value){
 	font-size: 4rem;
+    margin-right:.2rem;
 }
 
 .component::part(container).webthing-switch-property-container{
@@ -594,6 +609,17 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	/*width:94%;
 	margin:3%;*/
 	min-width: 130px;
+}
+
+
+#things:not(.single-thing) webthing-light-capability{
+    position:relative;
+    top:1.8rem;
+}
+
+webthing-light-capability::part(label){
+    position:relative;
+    top:-1rem;
 }
 
 
@@ -951,7 +977,6 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	list-style: none;
 	list-style-type: none;
 	padding-left: 0;
-	margin: 2rem 0;
 }
 
 
@@ -1111,11 +1136,20 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	height:40%;
 }
 
+#rule-parts-list-container{
+    width:100%;
+}
 
 .rule-part-container.open .property-select-option select{
     max-width:50%;
 }
 
+
+.drag-hint-container{
+    background-color:rgba(255,255,255,.4);
+    padding: 1rem 2rem;
+    border-radius:.5rem;
+}
 
 /*  RULE CREATION  */
 
@@ -1229,7 +1263,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     	background:
     		linear-gradient(90deg, rgba(0,0,0,.02) 37px, transparent 1%) center,
     		linear-gradient(rgba(0,0,0,.02) 37px, transparent 1%) center,
-    		rgba(255,255,255,.1);
+    		rgba(255,255,255,.3);
     	background-size: 40px 40px;
         
         

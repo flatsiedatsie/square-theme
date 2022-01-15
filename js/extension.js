@@ -45,7 +45,7 @@
       
       
       
-      document.addEventListener('keydown', function(event){
+      document.addEventListener('keydown', (event) => {
           console.log("keyboard: ", event);
           
           if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
@@ -61,6 +61,10 @@
           }
           else if(document.location.href.indexOf('/rules/') !== -1){
               console.log('keypress at rules:', event);
+              
+              
+              this.filter_rule_parts_list(event);
+              
           }
           
       });
@@ -112,6 +116,12 @@
         this.on_new_page(true);
         
     }
+    
+    
+    
+    
+    
+
     
     
     
@@ -283,6 +293,7 @@
 			
             
             window.setTimeout(() => {
+                
                 this.addLogSelector(); // adds the checkbox list
             }, 2000);
             
@@ -891,7 +902,7 @@
 
     // Creates collection buttons
     showLogCollections(){
-        //console.log("in showLogCollections");
+        console.log("in showLogCollections");
         
         var log_collections = {};
         if (localStorage.getItem("square_theme_log_collections") !== null) {
@@ -1293,6 +1304,42 @@
         
 		
     }
+    
+    // Press letter on the keyboard and it will filter the rule parts
+    filter_rule_parts_list(event){
+        var code = event.keyCode || event.charCode;
+        console.log("in filter_rule_parts_list. key code: ", code);
+        
+        if (document.activeElement.tagName === "INPUT"){
+            console.log("An input is already focused");
+        }
+        else{
+            if( code == 8 || code == 27 || code == 32){ // backspace, escape, space
+                let parts = document.querySelectorAll("#rule-parts-list .rule-part");
+                for (var i = 0; i < parts.length; ++i) {
+                    parts[i].style.display = 'block';
+                }
+            }
+            else if(code > 64 && code < 91){ // a-z
+                let parts = document.querySelectorAll("#rule-parts-list .rule-part");
+                for (var i = 0; i < parts.length; ++i) {
+                    
+                    const p_text = parts[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+                    //console.log("p_text: " + p_text);
+                    //console.log(event.key + " =?= " + p_text.charAt(0));
+                    if( event.key != p_text.charAt(0) ){
+                        parts[i].style.display = 'none';
+                    }
+                    else{
+                        parts[i].style.display = 'block';
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    
     
     
     
