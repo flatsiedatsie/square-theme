@@ -26,7 +26,7 @@
   "manifest_version": 1,
   "name": "Square Theme",
   "short_name": "Square",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "web_accessible_resources": [
     "css/*.css",
     "js/*.js"

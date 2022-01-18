@@ -42,22 +42,47 @@
           this.addThingsSearch();
       }, 1000);
       */
+
+              
       
-      
-      
+      document.addEventListener('keyup', (event) => {
+          /*
+          if (document.activeElement.tagName === "INPUT"){
+              return;
+          }
+          */
+          console.log("keyboard UP: ", event);
+          const code = event.keyCode || event.charCode;
+          console.log("up code: " + code);
+          
+          if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
+              this.things_overview_search(code);
+          }
+          else if(document.location.href.indexOf("/things/") != -1 && document.activeElement.tagName !== "INPUT" && code == 8){
+              document.getElementById('back-button').click();
+          }
+      });
+          
       document.addEventListener('keydown', (event) => {
-          console.log("keyboard: ", event);
+          /*
+          if (document.activeElement.tagName === "INPUT"){
+              return;
+          }
+          */
+          console.log("keyboard DOWN: ", event);
+          console.log("document.activeElement.tagName: " + document.activeElement.tagName);
           
           if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
               console.log("keyboard 2");
-              if(document.getElementById('square-theme-things-search-input') != null){
-                  console.log("keyboard:giving focus");
-                  document.getElementById('square-theme-things-search-input').focus();
-              }
+              this.addThingsSearch();
           }
           else if(document.location.href.endsWith('/settings/addons/discovered')){
               console.log('keypress at addons discovery:', event);
-              document.getElementById('discovered-addons-search').focus();
+              if(document.activeElement !== document.getElementById('discovered-addons-search')){
+                  console.log("giving focus");
+                  document.getElementById('discovered-addons-search').focus();
+              }
+              
           }
           else if(document.location.href.indexOf('/rules/') !== -1){
               console.log('keypress at rules:', event);
@@ -103,7 +128,7 @@
           this.add_log_filter_button();
           
           if(window.location.href.indexOf('/logs#') !== -1){
-              console.log("spotted a device id in the URL");
+              //console.log("spotted a device id in the URL");
               const paths = window.location.href.split("#").filter(entry => entry !== "");
               const device_id = paths[paths.length - 1];
               this.filter_logs_by_device(device_id);
@@ -133,14 +158,29 @@
             console.log("at /things or a sub-page" );
             
             this.addParts();
-            this.addThingsSearch();
+
+
+                //const things_count = things;
+                //console.log("things_count: " + things_count);
+            
+            
             
             if(window.location.pathname == '/things'){
                 console.log("at /things");
+                
+                // hide link to logs
                 if(document.getElementById('square-theme-link-to-logs-container') != null){
                     document.getElementById('square-theme-link-to-logs-container').style.display = 'none';
                 }
                 
+                // show search input
+                if(document.getElementById('square-theme-things-search-container') != null){
+                    document.getElementById('square-theme-things-search-input').value = '';
+                    document.getElementById('square-theme-things-search-container').style.display = 'block';
+                }
+                else if(document.getElementById("things").children.length > 10){
+                    this.addThingsSearch();
+                }
                 
             }
             else{
@@ -159,6 +199,11 @@
                 else{
                     console.log("no promise");
                     this.add_link_to_logs();
+                }
+                
+                if(document.getElementById('square-theme-things-search-container') != null){
+                    console.log("hiding search container");
+                    document.getElementById('square-theme-things-search-container').style.display = 'none';
                 }
             }
             
@@ -193,17 +238,17 @@
                     //console.log( logs[i].thing);
                     this.devices_with_logs.push(logs[i].thing);
                 }
-                console.log("updated list of devices with logs: ", this.devices_with_logs);
+                //console.log("updated list of devices with logs: ", this.devices_with_logs);
                 //window.location.pathname = '/logs';
             
                 resolve();
             })
             .catch(() => {
-                console.log("error doing API.getLogs");
+                //console.log("error doing API.getLogs");
                 reject();
             })
             .finally(() => {
-                console.log("API.getLogs finally");
+                //console.log("API.getLogs finally");
             });
         
         });
@@ -214,7 +259,7 @@
     add_link_to_logs(device_id){
         device_id = this.get_device_id_from_url(device_id);
         if( this.devices_with_logs.includes(device_id)){
-            console.log(device_id + " has logs, adding direct link to them");
+            //console.log(device_id + " has logs, adding direct link to them");
             if(document.getElementById('square-theme-link-to-logs-container') == null){
     			const thing_view = document.getElementById("thing-view");
             
@@ -230,7 +275,7 @@
     			document.getElementById("things-view").append(new_log_link_container);
                 
                 document.getElementById('square-theme-link-to-logs-button').addEventListener('click', () => {
-              		console.log("clicked on link to logs button. This:", this);
+              		//console.log("clicked on link to logs button. This:", this);
                     
                     document.getElementById('back-button').classList.add("hidden");
                     const device_id2 = this.get_device_id_from_url();
@@ -252,11 +297,11 @@
 
 
     add_log_filter_button(){
-        console.log("in add_log_filter_button");
+        //console.log("in add_log_filter_button");
 		// Create log filter container
 		var log_filter_container = document.getElementById("square-theme-log-filter-container");
 		if(!log_filter_container){
-			console.log("creating logs filter container");
+			//console.log("creating logs filter container");
             
 			const logs_view = document.getElementById("logs-view");
             
@@ -308,7 +353,7 @@
     		//Check if log filter toggle button is clicked
     		const log_filter_button = document.getElementById('square-theme-log-filter-button');
           	log_filter_button.addEventListener('click', () => {
-          		console.log("clicked on log filter toggle button. This:", this);
+          		//console.log("clicked on log filter toggle button. This:", this);
             
     	        if (log_filter_container.classList.contains('square-theme-log-filter-container-hidden')) {
     				log_filter_container.classList.remove('square-theme-log-filter-container-hidden');
@@ -354,7 +399,7 @@
             }
             const paths = pathname.split("/").filter(entry => entry !== "");
             device_id = paths[paths.length - 1];
-            console.log('missing device_id, got it from url: ', device_id);
+            //console.log('missing device_id, got it from url: ', device_id);
         }
         return device_id;
     }
@@ -368,7 +413,7 @@
         
         if(Date.now < this.last_check_properties + 100){
             // not enough time has passed.
-            console.log("Ignoring request to checkProperties since the last request was "  + (Date.now - this.last_check_properties) + " millisecond ago.");
+            //console.log("Ignoring request to checkProperties since the last request was "  + (Date.now - this.last_check_properties) + " millisecond ago.");
             if(this.check_properties_scheduled == false){
                 // But no extra check was scheduled either. Doing that now.
                 console.log("scheduling another properties upgrade for a bit later");
@@ -382,12 +427,12 @@
         
         
         if(window.location.pathname == '/things'){
-            console.log("check_properties was called on /things, stopping");
+            //console.log("check_properties was called on /things, stopping");
             return;
         }
         else{
             device_id = this.get_device_id_from_url(device_id);
-            console.log("checking device properties for: " + device_id );
+            //console.log("checking device properties for: " + device_id );
         }
         
         //console.log("check_properties: looping over device: " + device_id);
@@ -436,7 +481,7 @@
                                 
                             }
                             else if(prop2[property_name] == null){
-                                //console.log(property_name + " WAS NULL");
+                                console.log(property_name + " WAS NULL");
                                 this.modify_property_ui(property_name, false); //
                             }
                             /*
@@ -492,7 +537,7 @@
 
     // helper function for checkProperties that set the target to ...
     modify_property_ui(property_name, desire=false){
-        console.log("in modify_property_ui. property_name: " + property_name);
+        //console.log("in modify_property_ui. property_name: " + property_name);
         //var bad_element = document.querySelector('[data-name="' + property_name + '"]');
         var bad_element = document.querySelector('[id$="' + property_name + '"]');
         //console.log(bad_element);
@@ -603,7 +648,7 @@
         }
       //console.log("mutations, should_upgrade = " + should_upgrade);
       if(should_upgrade && window.location.pathname.startsWith('/things')){
-          console.log("mutation: should add parts and thermostat buttons");
+          //console.log("mutation: should add parts and thermostat buttons");
           this.addParts();
           this.addThermostatButtons();
           this.checkProperties();
@@ -746,7 +791,7 @@
             li.appendChild(label);
 			
 	  	    li.onclick = (event) => {//function(element_name){
-				console.log("filter item clicked");
+				//console.log("filter item clicked");
                 this.filterLogs();
 	  	  	}
 			
@@ -821,7 +866,7 @@
 
     // Goes over all the ticked checkboxes, and based on that shows or hides logs
     filterLogs(){
-        console.log("in filterLogs");
+        //console.log("in filterLogs");
 		// get list of all log names
 		const all_log_name_elements = document.querySelectorAll('#logs-view .logs-log-name');
         var all_log_names = [];
@@ -830,11 +875,11 @@
 			//console.log(log_name_element);
 			//console.log(log_name_element.innerHTML);
         }
-		console.log("all log item names = " + all_log_names);
+		//console.log("all log item names = " + all_log_names);
 		
 		// get list of selected log names
         const selected_logs = document.querySelectorAll(' #logs-view #square-theme-log-list-ul input:checked');
-        console.log("selected_logs: ", selected_logs);
+        //console.log("selected_logs: ", selected_logs);
         var selected_log_names = [];
         for (const selected_log of selected_logs) {
             selected_log_names.push(selected_log.name);
@@ -851,12 +896,12 @@
 			//console.log("comparing to:", all_log_names[log_counter]);
 			// If the current corresponding name is in the selected arrays name
 			if( selected_log_names.indexOf(all_log_names[log_counter]) > -1 || selected_log_names.length == 0 ){
-				console.log("do not hide " + all_log_names[log_counter]);
+				//console.log("do not hide " + all_log_names[log_counter]);
 				//log_container.style.visibility = 'visible';
 				log_container.style.display = 'block';
 			}
 			else{
-				console.log("hiding log container: " + all_log_names[log_counter]);
+				//console.log("hiding log container: " + all_log_names[log_counter]);
 				//console.log(log_container);
 				//log_container.style.visibility = 'hidden';
 				log_container.style.display = 'none';
@@ -929,12 +974,12 @@
             
             // on a click, set the checkboxes to the correct position
             new_collection_button.onclick = (event) => { //function(element_name){
-                console.log("collection button clicked", event.target.innerText);
+                //console.log("collection button clicked", event.target.innerText);
                 //console.log(this);
                 //console.log("log_collections: ", log_collections);
                 //console.log("log_collection: ", log_collections[event.target.innerText]);
                 let should_check = log_collections[event.target.innerText];
-                console.log("should_check: " + should_check);
+                //console.log("should_check: " + should_check);
                 this.filter_these_logs(should_check);
                 
                 // remove sidebar when collection button is clicked
@@ -978,7 +1023,7 @@
     filter_these_logs(should_check){
         const log_checkboxes = document.querySelectorAll(' #logs-view #square-theme-log-list-ul input');
 
-        console.log("log_checkboxes: ", log_checkboxes);
+        //console.log("log_checkboxes: ", log_checkboxes);
         for (const checkbox of log_checkboxes) {
             
             if(should_check.indexOf(checkbox.name) == -1){
@@ -986,7 +1031,7 @@
                 checkbox.checked = false;
             }
             else{
-                console.log("should check: " + checkbox.name);
+                //console.log("should check: " + checkbox.name);
                 checkbox.checked = true;
             }
         }
@@ -997,14 +1042,14 @@
 
 
     filter_logs_by_device(device_id){
-        console.log("filter logs by device: " + device_id);
-        console.log(this.api_logs);
+        //console.log("filter logs by device: " + device_id);
+        //console.log(this.api_logs);
         
         var properties_to_show = [];
     
         for (var i=0;i<this.api_logs.length;i++){
             if(this.api_logs[i].thing == device_id){
-                console.log("adding property: ", this.api_logs[i].property);
+                //console.log("adding property: ", this.api_logs[i].property);
                 properties_to_show.push( '/logs/things/' + device_id + '/properties/' + this.api_logs[i].property );
             }
         }
@@ -1027,24 +1072,24 @@
             }, 100);
             return;
         }
-        console.log("The logs are there!");
-        console.log("log_elements: ", log_elements);
+        //console.log("The logs are there!");
+        //console.log("log_elements: ", log_elements);
         
 		//const all_logs = document.querySelectorAll(' #logs-view .logs-log-container');
 		//console.log(all_logs);
         
-        console.log("properties_to_show: ", properties_to_show);
+        //console.log("properties_to_show: ", properties_to_show);
         
 		var log_counter = 0;
 		for (const log_container of log_elements) {
             
             const href = log_container.getElementsByClassName('logs-log-info')[0].href;
-            console.log(href);
+            //console.log(href);
             
             var spotted = false;
             for (var j=0;j<properties_to_show.length;j++){
                 if(href.endsWith(properties_to_show[j])){
-                    console.log("should be hidden");
+                    //console.log("should be hidden");
                     spotted = true;
                 }
             }
@@ -1180,6 +1225,42 @@
     addThingsSearch() {
         //console.log("in addThingsSearch");
         
+        if(document.getElementById('square-theme-things-search-container') == null){
+            let search_container = document.createElement('div');
+            search_container.setAttribute("id", "square-theme-things-search-container");
+            let search_input = document.createElement('input');
+            search_input.setAttribute("id", "square-theme-things-search-input");
+            search_input.setAttribute("type", "search");
+            search_input.setAttribute("name", "square-theme-search-input");
+            search_input.setAttribute("placeholder", "search");
+
+            search_container.appendChild(search_input);
+            document.getElementById("things-view").appendChild(search_container);
+        }
+        
+        const search_input = document.getElementById('square-theme-things-search-input');
+        if(search_input != null){
+            if(document.activeElement !== search_input){
+                console.log("giving focus");
+                search_input.focus();
+            }
+        }
+        else{
+            setTimeout(() => {
+                if(search_input != null){
+                    if(document.activeElement !== search_input){
+                        console.log("giving focus");
+                        search_input.focus();
+                    }
+                }
+            }, 100);
+        }
+        
+
+        
+        
+        
+        return;
         if(document.location.href.endsWith("/things")){
             if(document.getElementById('square-theme-things-search-container') != null){
                 // The search input already exists.
@@ -1196,14 +1277,13 @@
                 // Adding search input
                 
                 const thing_view = document.getElementById("things-view");
-                const things = document.getElementById("things");
-                const things_count = things.children.length;
+
         
                 console.log("thing_view: ", thing_view);
                 console.log("typeof search container: " + typeof document.getElementById('square-theme-things-search-container'), document.getElementById('square-theme-things-search-container'));
                 if(document.getElementById('square-theme-things-search-container') == null){
                     console.log("search input did not exist yet. things_count:" + things_count);
-            		if(things_count >= 0){ // used to be 10, but caused issues
+            		//if(things_count >= 0){ // used to be 10, but caused issues
                         // Create checkbox list
                         let search_container = document.createElement('div');
                         search_container.setAttribute("id", "square-theme-things-search-container");
@@ -1214,41 +1294,9 @@
                         search_input.setAttribute("placeholder", "search");
         
                         search_container.appendChild(search_input);
-                        thing_view.appendChild(search_container);
+                        document.getElementById("things-view").appendChild(search_container);
         
-                        const search_input_element = document.getElementById("square-theme-things-search-input");
-                        search_input_element.onkeyup = function(element_name){
-                            
-                            var search_string = search_input_element.value.toLowerCase();
-                            //console.log("onkeyup search_string = " + search_string);
-                            console.log("search_input_element key_up. search_string: " + search_string + ", and things_count: " + things_count);
-                
-                            if(search_string.length > 0){
-                    
-                                for (var i = 0; i < things_count; i++) {
-                                      var child = things.childNodes[i];
-                                      child.style.display = "none";
-                                }
-                                for (var i = 0; i < things_count; i++) {
-                                    const child = things.childNodes[i];
                         
-                                    var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
-                                    thing_title = thing_title.toLowerCase();
-                        
-                                    if(thing_title.indexOf(search_string) !== -1){
-                                        child.style.display = "block";
-                                    }
-                        
-                                }
-                    
-                            }
-                            else{
-                                for (var i = 0; i < things_count; i++) {
-                                      things.childNodes[i].style.display = "block";
-                                }
-                            }
-                            //this.check_keyboard = true;
-                        }
                         
                         /*
                         search_input_element.onsearch = function(element_name){
@@ -1284,7 +1332,7 @@
                         }
                         */
             
-                    }
+                    //}
                 }
                 else{
                     console.log("search input already existed");
@@ -1305,9 +1353,70 @@
 		
     }
     
+    
+    things_overview_search(code){
+        const search_input_element = document.getElementById("square-theme-things-search-input");
+        const things = document.getElementById("things");
+        const things_count = things.children.length;
+        //console.log("things_count: " + things_count);
+
+
+        if(search_input_element != null){
+            
+            const search_string = search_input_element.value.toLowerCase();
+            //console.log("onkeyup search_string = " + search_string);
+            //console.log("search_input_element. search_string: " + search_string + ", and things_count: " + things_count);
+
+            
+            if(search_string.length > 0){
+                
+                var shown_count = 0;
+                var last_element = null;
+                
+                for (var i = 0; i < things_count; i++) {
+                      var child = things.childNodes[i];
+                      child.style.display = "none";
+                }
+                for (var i = 0; i < things_count; i++) {
+                    const child = things.childNodes[i];
+    
+                    var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
+                    thing_title = thing_title.toLowerCase();
+                    
+                    
+    
+                    if(thing_title.indexOf(search_string) !== -1){
+                        child.style.display = "block";
+                        shown_count++;
+                        if(shown_count == 1){
+                            last_element = child.getElementsByClassName('thing-details-link')[0];
+                        }
+                    }
+    
+                }
+                
+                console.log("shown_count = " + shown_count);
+                if(last_element != null && shown_count == 1 && code == 13){
+                     console.log("enter spotted when one device was shown");
+                    last_element.click();
+                }
+                
+
+            }
+            else{
+                for (var i = 0; i < things_count; i++) {
+                      things.childNodes[i].style.display = "block";
+                }
+            }
+        }
+           
+    }
+    
+    
+    
     // Press letter on the keyboard and it will filter the rule parts
     filter_rule_parts_list(event){
-        var code = event.keyCode || event.charCode;
+        const code = key_press.keyCode || key_press.charCode;
         console.log("in filter_rule_parts_list. key code: ", code);
         
         if (document.activeElement.tagName === "INPUT"){

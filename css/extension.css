@@ -320,7 +320,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 #things.single-thing > .thing > *:not(div){
 	min-height: 140px;
     /*margin-bottom: 0.5rem;*/
-    margin-top: 1rem;
+    padding-top: 2rem;
     /*border-bottom: 1px solid rgba(0,0,0,.1);
     border-radius: 0;
     box-shadow: 0 100px 0 rgb(0 0 0 / 3%);*/
@@ -338,7 +338,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     height:100%;
 	position:relative;
     background-color:rgba(0,0,0,.2);
-    padding:1rem;
+    padding:2rem 1rem 0 1rem;
     box-sizing:border-box;
 }
 
@@ -348,6 +348,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	width:200px;
 	margin-right:1rem;
 }
+
 #things.single-thing > .thing > *:not(div){
 	width:410px;
 	/*height:150px;*/
@@ -361,6 +362,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     height: auto;
     background-color: rgba(0,0,0,.3);
     margin: 0 10px 10px 0;
+    padding-top:0;
     
 }
 #things.single-thing > .thing > div{
@@ -1013,6 +1015,11 @@ webthing-light-capability::part(label){
 }
 
 
+.logs-log-container{
+    animation: extension-square-theme-fadeIn 1s linear;
+}
+
+
 /*  logs overlaying on top of each other  */
 .square-theme-logs-overlay .logs-log-container{
 	position:absolute;
@@ -1244,8 +1251,13 @@ webthing-light-capability::part(label){
     
     #things:not(.single-thing) .thing.connected{
         box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+        /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;*/
     }
     
+    #things.single-thing > .thing > div{
+    	/*max-width:410px;*/
+        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;
+    }
     
     
     #square-theme-log-collections-container, #square-theme-log-list-container{
