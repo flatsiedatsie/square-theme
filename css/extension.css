@@ -38,6 +38,10 @@ body{
 }
 */
 
+.icon-button{
+    cursor:pointer;
+}
+
 .square-theme-top-right-icon{
     position:fixed;
     top:2rem;
@@ -251,6 +255,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     box-sizing:border-box;
     padding:1rem 1rem 1rem 1rem;
     border-top: 1px solid rgba(0,0,0,.2);
+    font-weight:bold;
 }
 
 #things:not(.single-thing) .thing .component::part(contents){
@@ -389,6 +394,12 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 #things.single-thing > .thing > div.thing-detail-container [data-name="data transmission"],
 #things.single-thing > .thing > div.thing-detail-container [data-name="Data transmission"] {
     background-color:rgba(0,0,0,.1);
+}
+
+#things.single-thing > .thing > div.thing-detail-container [data-name="Thermostat"]::part(contents){
+    position:initial;
+    transform:none;
+    margin:bottom:.2rem;
 }
 
 
@@ -661,27 +672,33 @@ webthing-light-capability::part(label){
 	display:flex;
 	justify-content:space-between;
 }
-
+/*
 .component::part(down){
     width: 5rem;
     height: 5rem;
     padding: 1rem;
     box-sizing: border-box;
     font-size: 2rem;
-    background-color: rgba(0,0,0,.05);
+    background-color: rgba(0,0,0,.1);
     margin-bottom: .2rem;	
     cursor: pointer;
+    margin: .5rem;
+    border-radius:5rem;
 }
-
+*/
+.component::part(down),
 .component::part(up){
     width: 5rem;
     height: 5rem;
     padding: 1rem;
     box-sizing: border-box;
     font-size: 2rem;
-    background-color: rgba(0,0,0,.05);
+    background-color: rgba(0,0,0,.1);
     margin-bottom: .2rem;	
     cursor: pointer;
+    margin: 1rem .8rem 0 .8rem;
+    border-radius:.5rem;
+    font-weight:bold;
 }
 
 
@@ -1256,7 +1273,15 @@ webthing-light-capability::part(label){
     
     #things.single-thing > .thing > div{
     	/*max-width:410px;*/
-        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;
+        /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;*/
+        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+    }
+    
+    .component::part(name){
+        font-weight:bold;
+    }
+    #things:not(.single-thing) .thing span.thing-title{
+        color: rgba(255,255,255,.9);
     }
     
     

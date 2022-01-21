@@ -9,11 +9,13 @@
       this.api_logs = [];
       
       // Create observer for the things overview
-      this.observer = new MutationObserver(this.mutationCallback.bind(this));
+      this.observer = new MutationObserver(this.thingsMutationCallback.bind(this));
       this.observer.observe(
         document.getElementById('things'),
         {childList: true}
       );
+      
+      this.shadow_observer = new MutationObserver(this.shadowMutationCallback.bind(this));
       
       // upgrade the style of messages that can show up in the bottom of the window
       this.message_area_observer = new MutationObserver(this.messageAreaCallback.bind(this));
@@ -22,8 +24,8 @@
         {childList: true}
       );
       
-      
-
+      this.last_mutation_activation_time = 0;
+      this.shadow_mutation_counter = 0;
       
       //this.check_keyboard = false;
       this.previous_document_location = window.location.pathname;
@@ -186,9 +188,9 @@
             else{
                 console.log("ON A THING DETAIL PAGE");
 
-                this.checkProperties();
+                this.checkProperties(null, true);
                 this.addThermostatButtons();
-                
+                //this.addShadowMutationsListener();
                 if(just_arrived){
                     console.log("using promise");
                     this.update_logs_list().then(() => {
@@ -222,6 +224,32 @@
     }
     
     
+    shadowMutationCallback(mutations){
+        console.log("in shadowMutationCallback. Mutations: ", mutations);
+        if(Date.now() - 100 > this.last_mutation_activation_time){
+            this.last_mutation_activation_time = Date.now();
+            console.log(this.shadow_mutation_counter);
+            this.shadow_mutation_counter++;
+            window.setTimeout(() => {
+                console.log("50ms have passed, calling check_properties");
+                this.checkProperties();
+            }, 50);
+            
+        }
+        else{
+            console.log(" - ignoring shadow mutation callback.");
+        }
+    }
+    
+    /*
+    addMutationsListener(element){
+        this.observer = new MutationObserver(this.thingsMutationCallback.bind(this));
+        this.observer.observe(
+          document.getElementById('things'),
+          {childList: true}
+        );
+    }
+    */
     
 
     update_logs_list(){
@@ -389,7 +417,7 @@
         //console.log("checking device_id: " + device_id);
         //console.log(typeof device_id);
         
-        if(typeof device_id == 'undefined'){
+        if(typeof device_id == 'undefined' || device_id == null){
             
             const { pathname } = window.location;
             
@@ -409,8 +437,8 @@
 
     // Fixes things detail pages, by showing unknown properties with ...
     // This can be called multiple times when at a page, for example if a property with a known value changes to unknown, this can be reflected.
-    checkProperties(device_id){
-        
+    checkProperties(device_id, on_new_page){
+        /*
         if(Date.now < this.last_check_properties + 100){
             // not enough time has passed.
             //console.log("Ignoring request to checkProperties since the last request was "  + (Date.now - this.last_check_properties) + " millisecond ago.");
@@ -423,16 +451,20 @@
                  },101);
             }
         }
-        
+        */
         
         
         if(window.location.pathname == '/things'){
-            //console.log("check_properties was called on /things, stopping");
+            console.log("check_properties was called on /things, stopping");
             return;
         }
         else{
             device_id = this.get_device_id_from_url(device_id);
             //console.log("checking device properties for: " + device_id );
+        }
+        
+        if(on_new_page){
+            console.log("check_properties: on_new_page was true. Attaching listeners.");
         }
         
         //console.log("check_properties: looping over device: " + device_id);
@@ -461,7 +493,8 @@
                         
                         API.getJson('/things/' + device_id + '/properties/' + property_name)
                         .then((prop2) => {
-                            //console.log(property_name + ": ", prop2);
+                            this.last_mutation_activation_time = Date.now();
+                            console.log("checkProperties: API property result for :" + property_name + ": ", prop2);
                             
                             //const read_only = readOnly;
                             
@@ -471,6 +504,53 @@
                             //var components = document.getElementsByClassName('component');
                             //console.log("components: ", components);
                             const capitalised_property_name = property_name.charAt(0).toUpperCase() + property_name.slice(1);
+                            
+                            try{
+                                if(on_new_page){
+                                    //console.log("check_properties: on_new_page was true. Attaching listeners.");
+                                    var element_to_observe = document.querySelector('[id$="' + property_name + '"]');
+                                    if(element_to_observe != null){
+                                    
+                                        const shadow_to_observe = element_to_observe.shadowRoot;
+                                        this.shadow_observer.observe( shadow_to_observe, {childList: true, subtree:true} ); // attributes: true, 
+                                    
+                                        //shadow_to_observe.addEventListener('change', this.shadowMutationCallback);
+                                    
+                                
+                                        var value_element = shadow_to_observe.querySelector('.webthing-numeric-label-property-value');
+                                        if(value_element != null){
+                                            console.log("value element existed: " + property_name);
+                                            //value_element.addEventListener('change', this.shadowMutationCallback);
+                                        }
+                                        else{
+                                            console.log("adding value element change listener failed, value element doesn't exist (yet): " + property_name);
+                                            /*
+                                            setTimeout(() =>{
+                                                console.log("trying again: " + property_name);
+                                                var value_element2 = shadow_to_observe.querySelector('.webthing-numeric-label-property-value');
+                                                value_element2.addEventListener('change', this.shadowMutationCallback);
+                                            }, 100);
+                                            */
+                                        }
+                                
+                                
+                                
+                                        //console.log("adding an observer to: ", shadow_to_observe);
+                                        // Add an observer
+                                    
+                                    }
+                                    else{
+                                        console.log("property to observe didn't exist yet: " + property_name);
+                                    }
+                                }
+                               
+                            }
+                            catch(e){
+                                console.log("error adding value observer: ", e);
+                            }
+                            
+                            
+                            
                             
                             
                             if(Object.keys(prop2).length === 0){
@@ -635,9 +715,12 @@
 
 
 
-
-    mutationCallback(mutations) {
-        //console.log("new mutations:", mutations);
+    // reacts to changes to things overview and detail pages
+    thingsMutationCallback(mutations) {
+        console.log("new mutations:", mutations);
+        
+        const mutationRecords = this.observer.takeRecords()
+        console.log("mutation records: ", mutationRecords);
         var should_upgrade = false;
         for (const mutation of mutations) {
             if (mutation.addedNodes.length > 0) {
@@ -648,20 +731,29 @@
         }
       //console.log("mutations, should_upgrade = " + should_upgrade);
       if(should_upgrade && window.location.pathname.startsWith('/things')){
+          console.log("mutation: nodes added");
           //console.log("mutation: should add parts and thermostat buttons");
           this.addParts();
-          this.addThermostatButtons();
-          this.checkProperties();
+          
+      }
+      if(window.location.pathname.startsWith('/things/')){
+          //console.log("mutation: should add parts and thermostat buttons");
+          //this.checkProperties(null,true);
+          if(should_upgrade){
+              this.addThermostatButtons();
+          }
       }
       
       try{
-          
           if(window.location.pathname != this.previous_document_location){
               if(this.previous_document_location == '/logs'){
+                  console.log("DOES THE MUTATION LISTENER WORK ON LOGS? APPARENTLY SO");
                   this.update_logs_list();
               }
               this.previous_document_location = window.location.pathname;
               this.on_new_page();
+              
+              
           }
           
       }
@@ -669,6 +761,7 @@
 
     }
     
+    // Mutation callback. Upgrades the pop-up messages that are normally related to pairing messages.
     messageAreaCallback(mutations) {        
         
         function upgrade(){
