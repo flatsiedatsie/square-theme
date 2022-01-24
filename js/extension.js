@@ -56,11 +56,13 @@
           console.log("keyboard UP: ", event);
           const code = event.keyCode || event.charCode;
           console.log("up code: " + code);
+          console.log("document.activeElement.tagName: ", document.activeElement.tagName);
           
           if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
               this.things_overview_search(code);
           }
-          else if(document.location.href.indexOf("/things/") != -1 && document.activeElement.tagName !== "INPUT" && code == 8){
+          else if(document.location.href.indexOf("/things/") != -1 && document.activeElement.tagName !== "INPUT" && !document.activeElement.tagName.startsWith('WEBTHING-') && code == 8){
+              
               document.getElementById('back-button').click();
           }
       });
@@ -717,10 +719,10 @@
 
     // reacts to changes to things overview and detail pages
     thingsMutationCallback(mutations) {
-        console.log("new mutations:", mutations);
+        console.log("new mutations:", mutations.length);
         
         const mutationRecords = this.observer.takeRecords()
-        console.log("mutation records: ", mutationRecords);
+        //console.log("mutation records: ", mutationRecords);
         var should_upgrade = false;
         for (const mutation of mutations) {
             if (mutation.addedNodes.length > 0) {
