@@ -8,10 +8,14 @@
 	  this.devices_with_logs = [];
       this.api_logs = [];
       
-      // Create observer for the things overview
+      // Create observers for the things overview
       this.observer = new MutationObserver(this.thingsMutationCallback.bind(this));
       this.observer.observe(
         document.getElementById('things'),
+        {childList: true}
+      );
+      this.observer.observe(
+        document.getElementById('groups'),
         {childList: true}
       );
       
@@ -44,8 +48,17 @@
           this.addThingsSearch();
       }, 1000);
       */
+      
+      API.getThings().then((things) => {
+          console.log('things: ', things);
+      });
 
-              
+      var remove_group_question = document.createElement('div');
+      remove_group_question.setAttribute("id", "square-theme-remove-group-question");
+      remove_group_question.innerHTML = "Are you sure you want to dissolve this group? If you do, your things will return to the top of the things overview.";
+      
+      
+      document.getElementById('group-context-menu-content-remove').prepend(remove_group_question);
       
       document.addEventListener('keyup', (event) => {
           /*
@@ -62,7 +75,6 @@
               this.things_overview_search(code);
           }
           else if(document.location.href.indexOf("/things/") != -1 && document.activeElement.tagName !== "INPUT" && !document.activeElement.tagName.startsWith('WEBTHING-') && code == 8){
-              
               document.getElementById('back-button').click();
           }
       });
@@ -813,6 +825,7 @@
 
     addParts() {
       const items = [
+        '#groups .thing > *:not(a):not(span):not(.component)',
         '#things:not(.single-thing) > .thing > *:not(a):not(span):not(.component)',
         '#things:not(.single-thing) > .thing > *:not(div):not(.component)',
         '#things.single-thing > .thing > *:not(div)',

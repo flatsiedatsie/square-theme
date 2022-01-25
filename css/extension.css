@@ -79,7 +79,6 @@ body{
 
 
 
-
 .developer-link-item a, .settings-item a{
     color:inherit;
 }
@@ -118,11 +117,6 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     background-color:rgba(0,0,0,.4);
 }
 
-   /*  logs  */
-
-.logs-graph-tooltip{
-    display:none;
-}
 
 
 
@@ -141,6 +135,111 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     border-radius:.5rem;
     width:8rem;
 }
+
+
+
+
+
+
+
+
+/*   GROUPS   */
+
+#groups{
+    width: calc(100% - 19.2rem);
+    margin-left: 8.6rem;
+    padding-bottom:12rem;
+}
+
+.group{
+    margin-top:4rem;
+    background-color:transparent;
+    display:flex;
+    flex-wrap:wrap;
+    border:none;
+    padding-bottom:.5rem;
+    /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;*/
+    /*box-shadow: rgb(50 50 93 / 35%) 0px 50px 100px -20px, rgb(0 0 0 / 40%) 0px 30px 60px -30px, rgb(10 37 64 / 45%) 0px -2px 6px 0px inset;*/
+    background-color:rgba(255,255,255,.1);
+}
+
+.group.open{
+    /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;*/
+    background-color:transparent;
+    padding-bottom:1rem;
+}
+
+.group > .bar{
+    width:100%;
+}
+
+.group.open > .bar:first-child:nth-last-child(1) {
+    width:100%;
+    background-color:rgba(255,255,255,.1);
+    border-radius:.5rem;
+}
+/*
+.group > .bar:first-child:nth-last-child(1):after{
+    content: '';
+    border: 2px dashed rgba(255,255,255,.5);
+    display: block;
+    position: absolute;
+    top: -0.2rem;
+    left: -0.2rem;
+    width: 100%;
+    height: 5rem;
+    z-index:-1;
+}
+*/
+
+.group div.bar button.edit{
+    cursor:pointer;
+    opacity:.4;
+    top:1rem;
+}
+.group > .bar .edit:hover{
+    opacity:1;
+}
+
+.group-overflow-menu a:last-of-type{
+    font-size:0;
+}
+.group-overflow-menu a:last-of-type:after{
+    content:"Ungroup";
+    font-size:2rem;
+}
+
+.group div.bar button.foldIn{
+    position:absolute;
+    opacity:0;
+    width: calc(100% - 6rem);
+    transform:none;
+    cursor:row-resize;
+    height:4rem;
+}
+.group.open div.bar button.foldIn{
+    transform:none;
+}
+
+.group .foldIn{
+    
+}
+
+
+.group div.bar div.title{
+    font-size:3.2rem;
+    color:inherit;
+}
+
+
+#square-theme-remove-group-question{
+    padding:4rem;
+    max-width:60rem;
+    margin: 0 auto;
+    text-align:center;
+    line-height:3rem;
+}
+
 
 
 
@@ -227,6 +326,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	display: inline-block;
 }
 
+#groups .thing,
 #things:not(.single-thing) .thing{
 	
 	text-align: left;
@@ -249,6 +349,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 }
 
 
+#groups span.thing-title,
 #things:not(.single-thing) .thing span.thing-title{
 	/*width:calc(100% - 2rem);*/
     width:100%;
@@ -258,17 +359,21 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     font-weight:bold;
 }
 
+#groups .thing .component::part(contents),
 #things:not(.single-thing) .thing .component::part(contents){
 	width:auto;
     display:flex;
     align-items:baseline;
 }
+
+#groups .thing .component::part(unit),
 #things:not(.single-thing) .thing .component::part(unit){
 	opacity:.6;
 	font-size:1.2rem;
 	padding-left:.25rem;
 	display:block;
 }
+#groups .thing webthing-thermostat-capability.component::part(unit),
 #things:not(.single-thing) .thing webthing-thermostat-capability.component::part(unit){
 	opacity:.6;
 	font-size:1.2rem;
@@ -276,7 +381,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	display:inline;
 }
 
-
+#groups .thing .component::part(webthing-boolean-property-label):not([value]),
 #things.single-thing > .thing .component::part(webthing-boolean-property-label):not([value]){
     box-shadow: 5px 5px;
 }
@@ -305,6 +410,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     background-color:black;
 }
 
+#groups .thing > *:not(a):not(span),
 #things:not(.single-thing) > .thing > *:not(a):not(span),
 #things.single-thing > .thing > *:not(div),
 #things.single-thing > .thing > div.thing-detail-container > *{
@@ -321,6 +427,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 	border-radius: 0.5rem;
 }
 
+#groups .thing > *:not(a):not(span),
 #things:not(.single-thing) > .thing > *:not(a):not(span),
 #things.single-thing > .thing > *:not(div){
 	min-height: 140px;
@@ -331,6 +438,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     box-shadow: 0 100px 0 rgb(0 0 0 / 3%);*/
 }
 
+#groups .thing > [data-unit]::part(value),
 #things:not(.single-thing) > .thing > [data-unit]::part(value),
 #things.single-thing > .thing > [data-unit]::part(value){
     font-size:3.5rem;
@@ -356,20 +464,13 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 
 #things.single-thing > .thing > *:not(div){
 	width:410px;
-	/*height:150px;*/
-	
-	/*max-width:615px;
-    flex-grow: 2;*/
-    /*
-    margin-bottom: 1rem;
-	margin-right: 1rem;
-    */
     height: auto;
     background-color: rgba(0,0,0,.3);
     margin: 0 10px 10px 0;
     padding-top:0;
     
 }
+
 #things.single-thing > .thing > div{
 	/*max-width:410px;*/
 }
@@ -603,9 +704,11 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     margin-right:.2rem;
 }
 
+/*
 .component::part(container).webthing-switch-property-container{
 	border:5px solid red;
 }
+*/
 
 .component::part(contents){
 	/*position:relative;*/
@@ -715,10 +818,11 @@ webthing-light-capability::part(label){
 	padding-bottom:1rem;
 }
 
-
+/*
 #things:not(.single-thing) .thing .webthing-custom-capability-icon{
 	border: 2px solid red !important;
 }
+*/
 
 #things #icon,
 #icon.webthing-custom-capability-icon{
@@ -757,6 +861,12 @@ webthing-light-capability::part(label){
 	height:100%;
 	max-height: 100%;
 }
+
+
+
+
+
+
 
 
 
@@ -895,6 +1005,10 @@ webthing-light-capability::part(label){
 
 /*  LOGS LOGGING OVERVIEW  */
 
+
+.logs-graph-tooltip{
+    display:none;
+}
 
 #logs-view:not(.solo-view) #square-theme-log-filter-container{
 	display:flex;
@@ -1121,6 +1235,9 @@ webthing-light-capability::part(label){
 }
 
 
+
+
+
 /*  POPUP MESSAGE  */
 
 #message-area > span:not(:last-of-type){
@@ -1140,6 +1257,9 @@ webthing-light-capability::part(label){
     display:block;
     margin-top:1.5rem;
 }
+
+
+
 
 
 
@@ -1240,6 +1360,7 @@ webthing-light-capability::part(label){
 	}
 	*/
 	
+    #groups .thing,
 	#things:not(.single-thing) .thing{
 		min-width: 175px;
 		max-width:263px;
@@ -1250,12 +1371,14 @@ webthing-light-capability::part(label){
 	
 	
 @media only screen and (min-width: 1000px) {
+    #groups .thing,
 	#things:not(.single-thing) .thing {
 		min-height:200px;
 	}
 	
 
 }
+
 
 @media only screen and (min-width: 1200px) {
 /*@media (prefers-color-scheme: dark) {*/
@@ -1325,4 +1448,12 @@ webthing-light-capability::part(label){
     .logs-scroll-control{
         background-color:black!important;
     }
+    /*
+    .group.open{
+        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+    }
+    .group.open > .bar:first-child:nth-last-child(1) {
+        background-color:transparent;
+    }
+    */
 }
