@@ -169,6 +169,14 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     padding-bottom:1rem;
 }
 
+.group:not(.open){
+    overflow:hidden;
+}
+
+.group:not(.open):hover{
+    background-color:rgba(255,255,255,.15);
+}
+
 .group > .bar{
     width:100%;
 }

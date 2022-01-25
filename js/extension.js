@@ -33,29 +33,19 @@
       
       //this.check_keyboard = false;
       this.previous_document_location = window.location.pathname;
-            
-      // apply the theme after loading
-      //this.addParts();
+    
 
-      //this.addThingsSearch();
-      //this.addUndefined();
-      //this.update_logs_list();
-      
-      //this.checkProperties();
-      /*
-      setTimeout(() => {
-          console.log('delayed adding of the search button');
-          this.addThingsSearch();
-      }, 1000);
-      */
-      
       API.getThings().then((things) => {
           console.log('things: ', things);
       });
-
+      
+      API.getGroups().then((groups) => {
+          console.log('groups: ', groups);
+      });
+      
       var remove_group_question = document.createElement('div');
       remove_group_question.setAttribute("id", "square-theme-remove-group-question");
-      remove_group_question.innerHTML = "Are you sure you want to dissolve this group? If you do, your things will return to the top of the things overview.";
+      remove_group_question.innerHTML = "Are you sure you want to move things out of this group and then remove it?";
       
       
       document.getElementById('group-context-menu-content-remove').prepend(remove_group_question);
@@ -153,7 +143,6 @@
       });
       
         
-        
         this.on_new_page(true);
         
     }
@@ -174,12 +163,6 @@
             console.log("at /things or a sub-page" );
             
             this.addParts();
-
-
-                //const things_count = things;
-                //console.log("things_count: " + things_count);
-            
-            
             
             if(window.location.pathname == '/things'){
                 console.log("at /things");
@@ -1352,6 +1335,12 @@
                 console.log("giving focus");
                 search_input.focus();
             }
+            
+            // This listener seems to sometimes disappear...
+            search_input.onsearch = () => {
+                console.log("on-search");
+                this.things_overview_search(8); // simulate backspace
+            };
         }
         else{
             setTimeout(() => {
@@ -1364,109 +1353,29 @@
             }, 100);
         }
         
+        
 
         
         
-        
-        return;
-        if(document.location.href.endsWith("/things")){
-            if(document.getElementById('square-theme-things-search-container') != null){
-                // The search input already exists.
-                console.log("search container exists");
-                if(document.getElementById('square-theme-things-search-input').value != ''){
-                    document.getElementById('square-theme-things-search-input').value = '';
-                }
-                //this.check_keyboard = true;
-                
-                document.getElementById('square-theme-things-search-container').style.display = 'block';
-                
-            }
-            else{
-                // Adding search input
-                
-                const thing_view = document.getElementById("things-view");
-
-        
-                console.log("thing_view: ", thing_view);
-                console.log("typeof search container: " + typeof document.getElementById('square-theme-things-search-container'), document.getElementById('square-theme-things-search-container'));
-                if(document.getElementById('square-theme-things-search-container') == null){
-                    console.log("search input did not exist yet. things_count:" + things_count);
-            		//if(things_count >= 0){ // used to be 10, but caused issues
-                        // Create checkbox list
-                        let search_container = document.createElement('div');
-                        search_container.setAttribute("id", "square-theme-things-search-container");
-                        let search_input = document.createElement('input');
-                        search_input.setAttribute("id", "square-theme-things-search-input");
-                        search_input.setAttribute("type", "search");
-                        search_input.setAttribute("name", "square-theme-search-input");
-                        search_input.setAttribute("placeholder", "search");
-        
-                        search_container.appendChild(search_input);
-                        document.getElementById("things-view").appendChild(search_container);
-        
-                        
-                        
-                        /*
-                        search_input_element.onsearch = function(element_name){
-                
-                            var search_string = search_input_element.value.toLowerCase();
-                            console.log("onsearch search_string = " + search_string);
-                
-                            if(search_string.length > 2){
-                    
-                                for (var i = 0; i < things_count; i++) {
-                                      var child = things.childNodes[i];
-                                      child.style.display = "none";
-                                }
-                                for (var i = 0; i < things_count; i++) {
-                                    const child = things.childNodes[i];
-                        
-                                    var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
-                                    thing_title = thing_title.toLowerCase();
-                        
-                                    if(thing_title.indexOf(search_string) !== -1){
-                                        child.style.display = "block";
-                                    }
-                        
-                                }
-                    
-                            }
-                            else{
-                                for (var i = 0; i < things_count; i++) {
-                                      things.childNodes[i].style.display = "block";
-                                }
-                            }
-                
-                        }
-                        */
-            
-                    //}
-                }
-                else{
-                    console.log("search input already existed");
-                }
-                
-            }
-            
-        }
-        else{ 
-            // NOT on /things
-            if(document.getElementById('square-theme-things-search-container') != null){
-                // The search input already exists. It will be hidden.
-                document.getElementById('square-theme-things-search-container').style.display = 'none';
-            }
-            //this.check_keyboard = false; // do not check for keyboard input on any other page than /things
-        }
-        
-		
     }
     
     
     things_overview_search(code){
         const search_input_element = document.getElementById("square-theme-things-search-input");
         const things = document.getElementById("things");
-        const things_count = things.children.length;
+        const groups = document.getElementById("groups");
+        
         //console.log("things_count: " + things_count);
+
+        const all_things = document.querySelectorAll('#things-view .thing');
+        
+        if(all_things == null){
+            console.log("no things found");
+            return;
+        }
+        
+        console.log("all_things: ", all_things );
+        const things_count = all_things.length;
 
 
         if(search_input_element != null){
@@ -1482,17 +1391,16 @@
                 var last_element = null;
                 
                 for (var i = 0; i < things_count; i++) {
-                      var child = things.childNodes[i];
-                      child.style.display = "none";
+                    //const child = all_things[i]; //things.childNodes[i];
+                    //child.style.display = "none";
+                    all_things[i].style.display = "none";
                 }
                 for (var i = 0; i < things_count; i++) {
-                    const child = things.childNodes[i];
+                    const child = all_things[i]; //things.childNodes[i];
     
                     var thing_title = child.getElementsByClassName('thing-title')[0].innerHTML;
                     thing_title = thing_title.toLowerCase();
                     
-                    
-    
                     if(thing_title.indexOf(search_string) !== -1){
                         child.style.display = "block";
                         shown_count++;
@@ -1505,7 +1413,7 @@
                 
                 console.log("shown_count = " + shown_count);
                 if(last_element != null && shown_count == 1 && code == 13){
-                     console.log("enter spotted when one device was shown");
+                    console.log("enter key press spotted when one device was shown");
                     last_element.click();
                 }
                 
@@ -1513,7 +1421,8 @@
             }
             else{
                 for (var i = 0; i < things_count; i++) {
-                      things.childNodes[i].style.display = "block";
+                      //things.childNodes[i].style.display = "block";
+                      all_things[i].style.display = "block";
                 }
             }
         }
