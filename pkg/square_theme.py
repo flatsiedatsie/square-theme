@@ -45,17 +45,9 @@ class SquareThemeAPIHandler(APIHandler):
         self.server = 'http://127.0.0.1:8080'
         self.DEBUG = False
             
+        self.persistent_data = {}
+            
 
-        
-        # LOAD CONFIG
-        try:
-            self.add_from_config()
-        except Exception as ex:
-            print("Error loading config: " + str(ex))
-        
-        #self.DEBUG = True
-        
-        
         # Paths
         # Get persistent data
         try:
@@ -86,11 +78,24 @@ class SquareThemeAPIHandler(APIHandler):
         except:
             first_run = True
             print("Could not load persistent data (if you just installed the add-on then this is normal)")
-            self.persistent_data = {'items':[]}
+            self.persistent_data = {'collections':{}}
+            self.save_persistent_data()
+
+        if not 'collections' in self.persistent_data:
+            self.persistent_data['collections'] = {}
             
+
+        # LOAD CONFIG
+        try:
+            self.add_from_config()
+            self.save_persistent_data()
+        except Exception as ex:
+            print("Error loading config: " + str(ex))
+        
+        
         if self.DEBUG:
             print("self.persistent_data is now: " + str(self.persistent_data))
-
+        
 
         # Is there user profile data?    
         #try:
@@ -116,7 +121,7 @@ class SquareThemeAPIHandler(APIHandler):
             
 
             if self.DEBUG:
-                print("self.manager_proxy = " + str(self.manager_proxy))
+                #print("self.manager_proxy = " + str(self.manager_proxy))
                 print("Created new API HANDLER: " + str(manifest['id']))
         
         except Exception as e:
@@ -145,20 +150,42 @@ class SquareThemeAPIHandler(APIHandler):
             return
         
         
-        
-        # Api token
-        try:
-            if 'Authorization token' in config:
-                self.token = str(config['Authorization token'])
-                print("-Authorization token is present in the config data.")
-        except:
-            print("Error loading api token from settings")
-        
-
         if 'Debugging' in config:
             self.DEBUG = bool(config['Debugging'])
             if self.DEBUG:
                 print("-Debugging preference was in config: " + str(self.DEBUG))
+                
+        if 'Hide floorplan' in config:
+            self.persistent_data['hide_floorplan'] = bool(config['Hide floorplan'])
+            if self.DEBUG:
+                print("-Hide floorplan preference was in config: " + str(self.persistent_data['hide_floorplan']))
+        
+        
+        # Background color
+        try:
+            if 'Background color' in config:
+                self.persistent_data['background-color'] = str(config['Background color'])
+                if self.DEBUG:
+                    print("-Background color is present in the config data.")
+            else:
+                self.persistent_data['background-color'] = ""
+        except Exception as ex:
+            print("Error loading background color preference from settings: " + str(ex))
+        
+        
+        if self.DEBUG:
+            print("config: " + str(config))
+        
+        # Api token
+        #try:
+        #    if 'Authorization token' in config:
+        #        self.token = str(config['Authorization token'])
+        #        print("-Authorization token is present in the config data.")
+        #except:
+        #    print("Error loading api token from settings")
+        
+
+        
 
 
 
@@ -181,92 +208,48 @@ class SquareThemeAPIHandler(APIHandler):
             if request.method != 'POST':
                 return APIResponse(status=404)
             
-            if request.path == '/init' or request.path == '/update_items':
+            if request.path == '/ajax':
 
                 try:
                     
-                    if request.path == '/init':
-                        if self.DEBUG:
-                            print("Getting the initialisation data")
-                            
-                        try:
-                            state = 'ok'
-        
-                            # Check if a token is present
-                            if self.token == None:
-                                state = 'This addon requires an authorization token to work. Visit the settings page of this addon to learn more.'
-
-
-                            return APIResponse(
-                                status=200,
-                                content_type='application/json',
-                                content=json.dumps({'state' : state, 'items' : self.persistent_data['items']}),
-                            )
-                        except Exception as ex:
-                            print("Error getting init data: " + str(ex))
-                            return APIResponse(
-                                status=500,
-                                content_type='application/json',
-                                content=json.dumps({'state' : "Internal error: no thing data", 'items' : []}),
-                            )
-                            
+                    action = str(request.body['action']) 
                     
-                    elif request.path == '/update_items':
+                    if action == 'init':
+                        if self.DEBUG:
+                            print("in init")
+                        
+                        return APIResponse(
+                          status=200,
+                          content_type='application/json',
+                          content=json.dumps({'debug': self.DEBUG, 'background_color':self.persistent_data['background-color'], 'hide_floorplan':self.persistent_data['hide_floorplan']}),
+                        )
+                        
+                    elif action == 'get_collections':
+                        return APIResponse(
+                          status=200,
+                          content_type='application/json',
+                          content=json.dumps({'state' : 'ok', 'collections': self.persistent_data['collections']}),
+                        )
+                        
+                    elif action == 'save_collections':
+                        
+                        state = 'ok'
                         try:
-                            self.persistent_data['items'] = request.body['items']
+                            self.persistent_data['collections'] = request.body['collections']
+                            self.save_persistent_data()
                             
-                            self.update_simple_things()
-                                
-                            # try to get the correct property type (integer/float)
-                            try:
-                                for item in self.persistent_data['items']:
-                                    #print("_item: " + str(item))
-                                    if 'thing2' in item and 'property2' in item:
-                                        for thing in self.things:
-                                            thing_id = str(thing['id'].rsplit('/', 1)[-1])
-                                            #print("__id: " + str(thing_id))
-                                            if str(item['thing2']) == thing_id:
-                                                #print("BINGO. Props:")
-                                                #print(str(thing['properties']))
-                                                for thing_property_key in thing['properties']:
-                                                    
-                                                    property_id = thing['properties'][thing_property_key]['links'][0]['href'].rsplit('/', 1)[-1]
-                                                    #print("property_id = " + str(property_id))
-                                                    if str(item['property2']) == property_id:
-                                                        #print("bingo for property: " + str(property_id))
-                                                        #print("___type: " + str(thing['properties'][thing_property_key]['type']))
-
-                                                        #self.persistent_data['items'][item]['property2_type'] = str(thing['properties'][thing_property_key]['type'])
-                                                        item['property2_type'] = str(thing['properties'][thing_property_key]['type'])
-
-                      
-                            except Exception as ex:
-                                print("Error finding if property should be int or float: " + str(ex))
-                            
-                            self.save_persistent_data()    
-                                
-                            
-                            return APIResponse(
-                                status=200,
-                                content_type='application/json',
-                                content=json.dumps({'state' : 'ok'}),
-                            )
                         except Exception as ex:
-                            if self.DEBUG:
-                                print("Error saving updated items: " + str(ex))
-                            return APIResponse(
-                                status=500,
-                                content_type='application/json',
-                                content=json.dumps("Error updating items: " + str(ex)),
-                            )
-                            
+                            print("Error saving collections: " + str(ex))
+                            state = 'error'
+                        
+                        return APIResponse(
+                          status=200,
+                          content_type='application/json',
+                          content=json.dumps({'state' : state, 'collections': self.persistent_data['collections']}),
+                        )
                         
                     else:
-                        return APIResponse(
-                            status=500,
-                            content_type='application/json',
-                            content=json.dumps("API error"),
-                        )
+                        return APIResponse( status=404 )
                         
                         
                 except Exception as ex:

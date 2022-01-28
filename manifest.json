@@ -25,6 +25,31 @@
   "license": "MPL-2.0",
   "manifest_version": 1,
   "name": "Square Theme",
+  "options": {
+    "default": {
+	  "Background color": "",
+	  "Hide floorplan": false,
+      "Debugging": false
+    },
+    "schema": {
+      "properties": {
+        "Background color": {
+          "description": "You can override the default background colors with your own. Since the text color remains white, it's recommended to choose a darker color. It must be provided as a 'hex value', or a standard HTML color name. For example: #641364 is a deep purple. Using 'black' will make it black. Set is to empty to use the defaults.",
+          "type": "string"
+        },
+        "Hide floorplan": {
+          "type": "boolean",
+          "description": "If you nevery use it, then you might want to hide the floorplan."
+        },
+        "Debugging": {
+          "type": "boolean",
+          "description": "Advanced. Debugging allows you to diagnose any issues with the add-on. If enabled it will result in a lot more debug data in the internal log (which can be found under settings -> developer -> view internal logs)."
+        }
+      },
+      "required": [],
+      "type": "object"
+    }
+  },
   "short_name": "Square",
   "version": "2.0.0",
   "web_accessible_resources": [

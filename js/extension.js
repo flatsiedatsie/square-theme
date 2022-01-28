@@ -7,6 +7,16 @@
       this.check_properties_scheduled == false;
 	  this.devices_with_logs = [];
       this.api_logs = [];
+      this.log_collections = {};
+      
+      // Background color is also stored in browser local storage, since it's faster
+      document.addEventListener('DOMContentLoaded', function GetFavColor() {
+          var color = localStorage.getItem('background_color');
+          if (color != '') {
+              document.body.style.backgroundColor = color;
+          }
+      });
+      
       
       // Create observers for the things overview
       this.observer = new MutationObserver(this.thingsMutationCallback.bind(this));
@@ -14,10 +24,14 @@
         document.getElementById('things'),
         {childList: true}
       );
-      this.observer.observe(
-        document.getElementById('groups'),
-        {childList: true}
-      );
+      
+      if( document.getElementById('groups') != null ){
+          this.observer.observe(
+            document.getElementById('groups'),
+            {childList: true}
+          );
+      }
+
       
       this.shadow_observer = new MutationObserver(this.shadowMutationCallback.bind(this));
       
@@ -34,21 +48,52 @@
       //this.check_keyboard = false;
       this.previous_document_location = window.location.pathname;
     
-
+      /*
       API.getThings().then((things) => {
           console.log('things: ', things);
       });
+      try{
+          if(typeof API.getGroups === 'function') {
+              API.getGroups().then((groups) => {
+                  console.log('groups: ', groups);
+              });
+          }
+      }
+      catch(e){
+          console.log("Api test error: ", e);
+      }
+
       
-      API.getGroups().then((groups) => {
-          console.log('groups: ', groups);
+      API.getAddonsInfo().then((addons) => {
+          console.log('addons: ', addons);
       });
+      
+      
+      API.getInstalledAddons().then((addons) => {
+          console.log('addons: ', addons);
+      });
+      
+      
+      API.getExtensions().then((extensions) => {
+          console.log('extensions: ', extensions);
+      });
+      
+      
+      API.getAllUserInfo().then((user_info) => {
+          console.log('user_info: ', user_info);
+      });
+      */
       
       var remove_group_question = document.createElement('div');
       remove_group_question.setAttribute("id", "square-theme-remove-group-question");
       remove_group_question.innerHTML = "Are you sure you want to move things out of this group and then remove it?";
       
       
-      document.getElementById('group-context-menu-content-remove').prepend(remove_group_question);
+      const group_remove_view = document.getElementById('group-context-menu-content-remove');
+      if(group_remove_view != null){
+          document.getElementById('group-context-menu-content-remove').prepend(remove_group_question);
+      }
+      
       
       document.addEventListener('keyup', (event) => {
           /*
@@ -93,10 +138,12 @@
           else if(document.location.href.indexOf('/rules/') !== -1){
               console.log('keypress at rules:', event);
               
-              
               this.filter_rule_parts_list(event);
               
           }
+          
+          
+          
           
       });
       
@@ -144,6 +191,46 @@
       
         
         this.on_new_page(true);
+        
+        
+  		// Init
+        window.API.postJson(
+          `/extensions/${this.id}/api/ajax`,
+            {'action':'init'}
+
+        ).then((body) => {
+			console.log("Square theme Init API result: ", body);
+            
+            if(typeof body.background_color != 'undefined'){
+                if(body.background_color != ""){
+                    document.body.style.backgroundColor = body.background_color;
+                    localStorage.setItem('background_color', body.background_color);
+                }
+            }
+            
+            if(typeof body.hide_floorplan != 'undefined'){
+                if(body.hide_floorplan){
+                    document.getElementById('floorplan-menu-item').style.display = 'none';
+                }
+            }
+            
+            /*
+            if(typeof body.debug != 'undefined'){
+                if(body.debug){
+                    this.debug = body.debug;
+                    document.getElementById('extension-square-theme-debug-warning').style.display = 'block';
+                }
+            }
+            */
+			
+		
+        }).catch((e) => {
+  			console.log("Error getting theme init data: " + e.toString());
+        });	
+        
+        
+
+        //console.log("this.id: ", this.id);
         
     }
     
@@ -728,7 +815,7 @@
         }
       //console.log("mutations, should_upgrade = " + should_upgrade);
       if(should_upgrade && window.location.pathname.startsWith('/things')){
-          console.log("mutation: nodes added");
+          console.log("mutation: nodes added on path starting with /things");
           //console.log("mutation: should add parts and thermostat buttons");
           this.addParts();
           
@@ -1004,10 +1091,10 @@
     
     addLogCollection(){
         //let self = this;
-        var log_collections = {};
-        if (localStorage.getItem("square_theme_log_collections") !== null) {
-            log_collections = JSON.parse( localStorage.getItem("square_theme_log_collections") );
-        }
+        //var log_collections = {};
+        //if (localStorage.getItem("square_theme_log_collections") !== null) {
+        //    log_collections = JSON.parse( localStorage.getItem("square_theme_log_collections") );
+        //}
         
         const selected_logs = document.querySelectorAll(' #logs-view #square-theme-log-list-ul input:checked');
         var selected_log_names = [];
@@ -1023,92 +1110,153 @@
             if(collection_name != ""){
                 //console.log("collection_name = " + collection_name);
                 //console.log("selected: ", selected_log_names);
-                log_collections[collection_name] = selected_log_names; //.push({'name':collection_name,'logs':selected_log_names});
+                /*
+                if(typeof this.log_collections == 'string'){
+                    console.log("log collections was string? fixing.");
+                    this.log_collections = JSON.parse(this.log_collections);
+                }
+                */
+                this.log_collections[collection_name] = selected_log_names; //.push({'name':collection_name,'logs':selected_log_names});
         
-                localStorage.setItem("square_theme_log_collections", JSON.stringify(log_collections));
+                localStorage.setItem("square_theme_log_collections", JSON.stringify(this.log_collections));
+                
+                //console.log('going to save: ', this.log_collections);
+          
+                
+          
+          		// Save collections
+                window.API.postJson(
+                  `/extensions/${this.id}/api/ajax`,
+                    {'action':'save_collections','collections':this.log_collections}
+
+                ).then((body) => {
+        			console.log("save_collections API result:");
+        			console.log(body);
+                    this.showLogCollections();
+            
+                }).catch((e) => {
+          			console.log("Error saving collections after adding a collection: " + e.toString());
+                });	
+                
             }
             
         }
         
         
-        this.showLogCollections();
+        
 		
     }
 
 
     // Creates collection buttons
     showLogCollections(){
-        console.log("in showLogCollections");
+        //console.log("in showLogCollections");
         
-        var log_collections = {};
-        if (localStorage.getItem("square_theme_log_collections") !== null) {
-            //console.log("localStorage had log collection data:", localStorage.getItem("square_theme_log_collections") );
-            log_collections = JSON.parse( localStorage.getItem("square_theme_log_collections") );
-        }
-        else{
-            //console.log("browser local storage had no collections");
-            return;
-        }
+        //var log_collections = {};
         
-        
-        
-        const collection_names = Object.keys(log_collections);
-        
-        document.getElementById('square-theme-log-collections-container').innerHTML = "";
-        
-        collection_names.forEach((collection_name, index) => {
-            //console.log(`${collection_name}: ${log_collections[collection_name]}`);
+    
+  		// Save collections
+        window.API.postJson(
+          `/extensions/${this.id}/api/ajax`,
+            {'action':'get_collections'}
+
+        ).then((body) => {
+			//console.log("get_collections API result:");
+			//console.log(body);
+            if(typeof body.collections != 'undefined'){
+                //console.log("body.collections existed: ", body.collections);
+                this.log_collections = body.collections;
+                localStorage.setItem("square_theme_log_collections", JSON.stringify(this.log_collections));
+            }
+        }).catch((e) => {
+  			console.log("Error getting log collections data: ", e);
             
-    		let new_collection_button = document.createElement('button');
-    		new_collection_button.setAttribute("class", "square-theme-logs-collection-button square-theme-logs-small-button");
-    		new_collection_button.textContent = collection_name;
+            if (localStorage.getItem("square_theme_log_collections") !== null) {
+                //console.log("localStorage had log collection data:", localStorage.getItem("square_theme_log_collections") );
+                this.log_collections = JSON.parse( localStorage.getItem("square_theme_log_collections") );
+            }
+            else{
+                console.log("browser local storage had no collections backup");
+                return;
+            }
+        }).then(() => {
+            //console.log('Do this, no matter what happened before. log_collections type: ', typeof this.log_collections);
+            //console.log(this.log_collections);
             
-            // on a click, set the checkboxes to the correct position
-            new_collection_button.onclick = (event) => { //function(element_name){
-                //console.log("collection button clicked", event.target.innerText);
-                //console.log(this);
-                //console.log("log_collections: ", log_collections);
-                //console.log("log_collection: ", log_collections[event.target.innerText]);
-                let should_check = log_collections[event.target.innerText];
-                //console.log("should_check: " + should_check);
-                this.filter_these_logs(should_check);
+            const collection_names = Object.keys(this.log_collections);
+            //console.log("collection_names: ", collection_names);
+            document.getElementById('square-theme-log-collections-container').innerHTML = "";
+        
+            collection_names.forEach((collection_name, index) => {
+                //console.log(`${collection_name}: ${this.log_collections[collection_name]}`);
+            
+        		let new_collection_button = document.createElement('button');
+        		new_collection_button.setAttribute("class", "square-theme-logs-collection-button square-theme-logs-small-button");
+        		new_collection_button.textContent = collection_name;
+            
+                // on a click, set the checkboxes to the correct position
+                new_collection_button.onclick = (event) => { //function(element_name){
+                    //console.log("collection button clicked", event.target.innerText);
+                    //console.log(this);
+                    //console.log("log_collections: ", log_collections);
+                    //console.log("log_collection: ", log_collections[event.target.innerText]);
+                    let should_check = this.log_collections[event.target.innerText];
+                    //console.log("should_check: " + should_check);
+                    this.filter_these_logs(should_check);
                 
-                // remove sidebar when collection button is clicked
-                //this.hideLogMenu();
-                //document.getElementById('square-theme-log-collections-container').innerHTML = "";
-                document.getElementById('square-theme-log-filter-container').classList.add('square-theme-log-filter-container-hidden');
+                    // remove sidebar when collection button is clicked
+                    //this.hideLogMenu();
+                    //document.getElementById('square-theme-log-collections-container').innerHTML = "";
+                    document.getElementById('square-theme-log-filter-container').classList.add('square-theme-log-filter-container-hidden');
                 
-            };
+                };
             
             
-    		let new_collection_delete_button = document.createElement('button');
-    		new_collection_delete_button.setAttribute("class", "square-theme-logs-collection-delete-button square-theme-logs-small-button");
-    		//new_collection_delete_button.textContent = "✖";
-            new_collection_delete_button.innerHTML = '&#10006;';
-            new_collection_delete_button.onclick = (event) => {
-                //console.log(collection_name);
-                //console.log(event);
-                if(confirm('Are you sure you want to remove the "' + collection_name + '" collection?')){
-                    let parent = event.target.parentElement;
-                    parent.parentNode.removeChild(parent);
+        		let new_collection_delete_button = document.createElement('button');
+        		new_collection_delete_button.setAttribute("class", "square-theme-logs-collection-delete-button square-theme-logs-small-button");
+        		//new_collection_delete_button.textContent = "✖";
+                new_collection_delete_button.innerHTML = '&#10006;';
+                new_collection_delete_button.onclick = (event) => {
+                    //console.log(collection_name);
+                    //console.log(event);
+                    if(confirm('Are you sure you want to remove the "' + collection_name + '" collection?')){
+                        let parent = event.target.parentElement;
+                        parent.parentNode.removeChild(parent);
                 
-                    delete log_collections[collection_name];
-                    localStorage.setItem("square_theme_log_collections", JSON.stringify(log_collections));
-                }
+                        delete this.log_collections[collection_name];
+                        
+                        
+                  		// Save collections after a collection was deleted
+                        window.API.postJson(
+                          `/extensions/${this.id}/api/ajax`,
+                            {'action':'save_collections','collections':this.log_collections}
+
+                        ).then((body) => {
+                			console.log("Save collections API result: ", body);
+                            localStorage.setItem("square_theme_log_collections", JSON.stringify(this.log_collections));
+            
+                        }).catch((e) => {
+                  			console.log("Error saving log collections after deleting a collection: " + e.toString());
+                        });	
+                        
+                    }
                 
-            };
+                };
             
             
-            let new_collection_button_container = document.createElement('div');
-            new_collection_button_container.setAttribute("class", "square-theme-logs-collection-button-container");
+                let new_collection_button_container = document.createElement('div');
+                new_collection_button_container.setAttribute("class", "square-theme-logs-collection-button-container");
             
-            new_collection_button_container.appendChild(new_collection_button);
-            new_collection_button_container.appendChild(new_collection_delete_button);
+                new_collection_button_container.appendChild(new_collection_button);
+                new_collection_button_container.appendChild(new_collection_delete_button);
             
-    		document.getElementById('square-theme-log-collections-container').appendChild(new_collection_button_container);
+        		document.getElementById('square-theme-log-collections-container').appendChild(new_collection_button_container);
+            
+            });
             
         });
     }
+
 
     // Toggles the correct checkboxes, and then calls filterLogs.
     filter_these_logs(should_check){

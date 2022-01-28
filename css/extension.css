@@ -65,9 +65,12 @@ body{
     background-color:rgba(0,0,0,.1);
 }
 
+#logs-view,
+#rules-view, #rules,
+#floorplan-view,
 #addon-config-settings,
 #user-settings-edit, #user-settings-add, #addon-discovery-settings{
-    background-color:transparent;
+    background-color:transparent!important;
 }
 
 .wireless-network-item, .discovered-addon-item,
@@ -125,7 +128,7 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
 
 #square-theme-things-search-container{
     position: fixed;
-    top: 2rem;
+    top: 3.5rem;
     right: 2rem;
     z-index: 10;
 }
@@ -133,9 +136,15 @@ input[type='number'], input[type='text'], input[type='password'], input[type='em
     border:none;
     padding:.5rem;
     border-radius:.5rem;
-    width:8rem;
+    width:5.8rem;
 }
 
+#square-theme-things-search-input::placeholder {
+     color: transparent;
+}
+#square-theme-things-search-input:focus::placeholder {
+     color: inherit;
+}
 
 
 
@@ -1026,6 +1035,7 @@ webthing-light-capability::part(label){
     right: 2rem;
 	width:auto;
 	min-width:200px;
+    max-width:calc(100vw - 4rem);
     max-height:calc(100vh - 20rem);
     border-radius:10px;
     overflow:hidden;
@@ -1204,10 +1214,11 @@ webthing-light-capability::part(label){
 }
 
 .square-theme-logs-small-button{
-	height: 2.6rem;
+	/*height: 2.6rem;*/
     color: white;
     margin: .5rem;
-    font-size: 1.3rem;
+    /*font-size: 1.3rem;*/
+    padding:1rem;
 	/*background-color: #79add1;*/
     background-color:rgba(255,255,255,.1);
 	border:none;
@@ -1361,6 +1372,28 @@ webthing-light-capability::part(label){
 
 
 
+
+
+@media only screen and (max-width: 640px) {
+
+    .logs-log-container{
+        margin-top:2rem;
+    }
+
+    .logs-log-info{
+        display:flex;
+        align-items: baseline;
+        margin-top:0;
+        margin-bottom:0;
+    }
+
+    .logs-log-name{
+        max-width:calc(100vw - 20rem);
+    }
+    
+}
+
+
 @media only screen and (min-width: 641px) {
 	/*
 	#things:not(.single-thing) .thing {
@@ -1368,6 +1401,10 @@ webthing-light-capability::part(label){
 	}
 	*/
 	
+    .square-theme-logs-small-button{
+        padding: .5rem
+    }
+    
     #groups .thing,
 	#things:not(.single-thing) .thing{
 		min-width: 175px;
@@ -1397,15 +1434,24 @@ webthing-light-capability::part(label){
         
     }
     
+    #groups .thing > *:not(a):not(span),
+    #things:not(.single-thing) > .thing > *:not(a):not(span),
+    #things.single-thing > .thing > *:not(div){
+        opacity:.9;
+    }
+    
+    
     #things:not(.single-thing) .thing.connected{
-        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+        /* good box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;*/
         /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;*/
+        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px;
     }
     
     #things.single-thing > .thing > div{
     	/*max-width:410px;*/
         /*box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(255 255 255 / 30%) 0px 30px 60px -30px, rgb(187 192 197 / 35%) 0px -2px 6px 0px inset;*/
-        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+        /*good box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;*/
+        box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px;
     }
     
     .component::part(name){
