@@ -101,10 +101,10 @@
               return;
           }
           */
-          console.log("keyboard UP: ", event);
+          //console.log("keyboard UP: ", event);
           const code = event.keyCode || event.charCode;
-          console.log("up code: " + code);
-          console.log("document.activeElement.tagName: ", document.activeElement.tagName);
+          //console.log("up code: " + code);
+          //console.log("document.activeElement.tagName: ", document.activeElement.tagName);
           
           if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
               this.things_overview_search(code);
@@ -120,23 +120,23 @@
               return;
           }
           */
-          console.log("keyboard DOWN: ", event);
-          console.log("document.activeElement.tagName: " + document.activeElement.tagName);
+          //console.log("keyboard DOWN: ", event);
+          //console.log("document.activeElement.tagName: " + document.activeElement.tagName);
           
           if(document.location.href.endsWith("/things") && document.getElementById('add-thing-screen').classList.contains('hidden')){
-              console.log("keyboard 2");
+              //console.log("keyboard 2");
               this.addThingsSearch();
           }
           else if(document.location.href.endsWith('/settings/addons/discovered')){
-              console.log('keypress at addons discovery:', event);
+              //console.log('keypress at addons discovery:', event);
               if(document.activeElement !== document.getElementById('discovered-addons-search')){
-                  console.log("giving focus");
+                  //console.log("giving focus");
                   document.getElementById('discovered-addons-search').focus();
               }
               
           }
           else if(document.location.href.indexOf('/rules/') !== -1){
-              console.log('keypress at rules:', event);
+              //console.log('keypress at rules:', event);
               
               this.filter_rule_parts_list(event);
               
@@ -732,67 +732,6 @@
                     label_element.innerText = "...";
                 }
             }
-            
-            /*
-            const contents = shadow.querySelector('[id^="contents"]');
-            console.log("contents: ", contents);
-            
-            if(contents != null){
-                
-                console.log("readOnly again: " + read_only);
-                
-                if(read_only){
-                    contents.innerText = "...";
-                }
-                else{
-                    contents.style.border = '2px solid red'; 
-                    contents.style.opacity = '.5'; 
-                }
-                
-                
-                var styles = `
-                
-                [id^="contents"]{
-                    border:2px solid blue;
-                    opacity: .5;
-                }
-                
-                [id^="value-"]{
-                    border:2px solid red;
-                    opacity: .8;
-                }
-                
-                [id^="contents"]:before{
-                    content:'...';
-                    position:relative;
-                    left:50%;
-                }
-                
-                [id^="contents"] > *{
-                    visilibity:none;
-                }
-                
-                [class$="-property-value"]{
-                    border:2px solid red;
-                }
-                
-                `
-
-                var styleSheet = document.createElement("style")
-                styleSheet.type = "text/css"
-                styleSheet.innerText = styles
-                shadow.appendChild(styleSheet)
-                
-                
-                
-                //contents.style.border = '2px solid red'; 
-               
-            }
-            else{
-                console.log("hmm, no contents spotted");
-            }
-            */
-            
             
         }
     }
