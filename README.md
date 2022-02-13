@@ -1,6 +1,10 @@
 # square-theme
 A theme for the WebThings Gateway that removes the octopus design, and replaces it with a more 'traditional' square view. With the circular view it can be difficult to spot the property you're looking for beccause they keep changing position randomly. A big advantage of this theme is that properties now always end up in the same, predictable positions.
 
+This theme is now the main Candle theme. As such, development has moved to:
+https://github.com/createcandle/candle-theme
+
+
 It also adds some features:
 - Setpoints buttons for thermostats. Allows you to quickly increase of decrease the temperature by one degree.
 - Logs filtering. On the logs page, click on the filter icon in the top right to see a quick list of all your logs. You can then select the logs you want to focus on, and the rest will be hidden. You can also create presets, where you can give a name to a collection of logs, and quickly access it.
